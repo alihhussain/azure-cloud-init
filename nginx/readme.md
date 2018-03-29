@@ -16,8 +16,8 @@ cat /var/log/cloud-init.log | grep config-scripts-user
 cat /var/log/boot.log
 
 
-export rgName="test" && \
+export rgName="nginxCloudInit" && \
 export rgLocation="eastus" && \
 az group create -l $rgLocation -n $rgName && \
-az group deployment create --name MasterDeployment --resource-group $rgName --template-file ./azuredeploy1.json
+az group deployment create --name MasterDeployment --resource-group $rgName --template-file ./azuredeploy.json
 ```
