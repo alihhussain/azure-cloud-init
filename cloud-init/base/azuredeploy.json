@@ -1,0 +1,246 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "NsgName": {
+            "type": "string",
+            "defaultValue": "defaultNsg",
+            "metadata": {
+                "description": "The name of the Network Security Group"
+            }
+        },
+        "vnetName": {
+            "type": "string",
+            "defaultValue": "nginxVnet",
+            "metadata": {
+                "description": "VNet Name"
+            }
+        },
+        "vnetPrefix": {
+            "type": "string",
+            "defaultValue": "10.0.0.0/16",
+            "metadata": {
+                "description": "Address Prefix"
+            }
+        },
+        "subnetName": {
+            "type": "string",
+            "defaultValue": "Default",
+            "metadata": {
+                "description": "Subnet Name"
+            }
+        },
+        "subnetPrefix": {
+            "type": "string",
+            "defaultValue": "10.0.0.0/24",
+            "metadata": {
+                "description": "Subnet Prefix"
+            }
+        },
+        "vmName": {
+            "type": "string",
+            "defaultValue": "NginxWebVM",
+            "metadata": {
+                "description": "VM Name"
+            }
+        },
+        "adminUsername": {
+            "type": "string",
+            "defaultValue": "nginxAdmin",
+            "metadata": {
+                "description": "User name for the Virtual Machine."
+            }
+        },
+        "SSHKeys": {
+            "type": "string",
+            "metadata": {
+                "description": "SSH rsa public key file as a string."
+            },
+            "defaultValue": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsvQoaddMbc5zdqMXnBrn53eatB1hzHwk0rlpg/SUn+B6yMJRq0fvntn1/LWkhsOv2QIOkSZhnZO5rUJuoSaBZuRkXf2wUsva2Z9iaKMozzcadUXCU0y/2ekCPY+8eUZOSvTgmn2K0xT12H+rrzGK6MBgnFgDZ2npROZa4eF4SkMxcMpFbOiOEY53/OiokbwEFUXD3omrhURqJzOOWdaCy4XPjWvjEzpNagTM/uy0habgSVVa3Uj/aF8QkgixJOlgME4jBMyM4uyd/lCsgKvrFquwVbOWZUcic+lZTDVfjIUyqTkq6+avzxtWnxMNrktW7gfOA1Des53Vs4N4QL+af"
+        },
+        "userScript": {
+            "type": "string",
+            "metadata": {
+                "description": "Type in the bash script to run via cloud-init"
+            },
+            "defaultValue": "IyEvYmluL2Jhc2gNCmFwdC1nZXQgLXkgdXBkYXRlDQoNCiMgaW5zdGFsbCBBcGFjaGUyDQphcHQtZ2V0IC15IGluc3RhbGwgYXBhY2hlMiANCg0KIyB3cml0ZSBzb21lIEhUTUwNCmVjaG8gXDxjZW50ZXJcPlw8aDFcPldlY29tZSB0byBQMjAgQVJNIFRyYWluaW5nXDwvaDFcPlw8YnIvXD5cPC9jZW50ZXJcPiA+IC92YXIvd3d3L2h0bWwvcDIwLmh0bWwNCg0KIyByZXN0YXJ0IEFwYWNoZQ0KYXBhY2hlY3RsIHJlc3RhcnQ="
+        }
+    },
+    "variables": {
+        "dnsNameForPublicIP": "[concat('publicip', uniquestring(resourceGroup().id))]",
+        "publicIPAddressName": "PublicIP",
+        "publicIPAddressType": "Dynamic",
+        "nicName": "WebVMNic",
+        "vmSize": "Standard_DS2_v2",
+        "imageReference": {
+            "publisher": "Canonical",
+            "imageOffer": "UbuntuServer",
+            "sku": "16.04-LTS"
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2017-10-01",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[variables('publicIPAddressName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+                "dnsSettings": {
+                    "domainNameLabel": "[variables('dnsNameForPublicIP')]"
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-10-01",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[parameters('NsgName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "ssh_rule",
+                        "properties": {
+                            "description": "Allow SSH",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "22",
+                            "sourceAddressPrefix": "Internet",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "web_rule",
+                        "properties": {
+                            "description": "Allow HTTP",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "80",
+                            "sourceAddressPrefix": "Internet",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 101,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2018-01-01",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('vnetName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('NsgName'))]"
+            ],
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[parameters('vnetPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('subnetName')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnetPrefix')]",
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('NsgName'))]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2017-10-01",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[variables('nicName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('NsgName'))]",
+                "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks',parameters('vnetName')),'/subnets/',parameters('subnetName'))]"
+                            }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('NsgName'))]"
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-03-30",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('vmName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('vmSize')]"
+                },
+                "osProfile": {
+                    "computerName": "[parameters('vmName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "customData": "[parameters('userScript')]",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": true,
+                        "ssh": {
+                            "publicKeys": [
+                                {
+                                    "path": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
+                                    "keyData": "[parameters('SSHKeys')]"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('imageReference').publisher]",
+                        "offer": "[variables('imageReference').imageOffer]",
+                        "sku": "[variables('imageReference').sku]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "osdisk",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "http": {
+            "type": "string",
+            "value": "[concat('http://', reference(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName')), '2016-03-30').dnsSettings.fqdn)]"
+        }
+    }
+}
