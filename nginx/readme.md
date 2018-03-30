@@ -11,7 +11,7 @@ This template deploys a Nginx web server on a Ubuntu Virtual Machine. This templ
 
 1. To deploy the template:
 ```bash
-export rgName="nginxCloudInit2" && \
+export rgName="nginxCloudInit" && \
 export rgLocation="eastus" && \
 az group create -l $rgLocation -n $rgName && \
 az group deployment create --name MasterDeployment --resource-group $rgName --template-file ./azuredeploy.json
