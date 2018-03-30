@@ -15,6 +15,9 @@ export rgName="nginxCloudInit" && \
 export rgLocation="eastus" && \
 az group create -l $rgLocation -n $rgName && \
 az group deployment create --name MasterDeployment --resource-group $rgName --template-file ./azuredeploy.json
+
+# Onces deployed run the following command to see the FQDN for the Web Page
+az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.http.value | awk -F '"' '{print $2}'
 ```
 
 To view the output:
