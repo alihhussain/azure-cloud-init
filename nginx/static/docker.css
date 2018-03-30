@@ -1,0 +1,18 @@
+h1 {
+    color: blue;
+    margin: 0 auto;
+    text-align: center;
+}
+table {
+    color: black;
+    margin: 0 auto;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 20px;
+}
+span {
+    color: red;
+}
+.info {
+    color: teal;
+}

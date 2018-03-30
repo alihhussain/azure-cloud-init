@@ -11,7 +11,7 @@
         },
         "vnetName": {
             "type": "string",
-            "defaultValue": "nginxVnet",
+            "defaultValue": "apacheVnet",
             "metadata": {
                 "description": "VNet Name"
             }
@@ -39,14 +39,14 @@
         },
         "vmName": {
             "type": "string",
-            "defaultValue": "NginxWebVM",
+            "defaultValue": "apacheWebVM",
             "metadata": {
                 "description": "VM Name"
             }
         },
         "adminUsername": {
             "type": "string",
-            "defaultValue": "nginxAdmin",
+            "defaultValue": "apacheAdmin",
             "metadata": {
                 "description": "User name for the Virtual Machine."
             }
