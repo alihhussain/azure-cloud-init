@@ -63,7 +63,7 @@
             "metadata": {
                 "description": "Type in the bash script to run via cloud-init"
             },
-            "defaultValue": "IyEvYmluL2Jhc2gNCmFwdC1nZXQgLXkgdXBkYXRlDQoNCiMgaW5zdGFsbCBBcGFjaGUyDQphcHQtZ2V0IC15IGluc3RhbGwgYXBhY2hlMiANCg0KIyB3cml0ZSBzb21lIEhUTUwNCmVjaG8gXDxjZW50ZXJcPlw8aDFcPldlY29tZSB0byBBenVyZSBDbG91ZC1Jbml0IE5naW54IEV4YW1wbGVcPC9oMVw+XDxici9cPlw8L2NlbnRlclw+ID4gL3Zhci93d3cvaHRtbC9pbmRleC5odG1sDQoNCiMgcmVzdGFydCBBcGFjaGUNCmFwYWNoZWN0bCByZXN0YXJ0"
+            "defaultValue": "IyEvYmluL2Jhc2gNCmFwdC1nZXQgLXkgdXBkYXRlDQoNCiMgaW5zdGFsbCBBcGFjaGUyDQphcHQtZ2V0IC15IGluc3RhbGwgYXBhY2hlMiANCg0KIyB3cml0ZSBzb21lIEhUTUwNCmVjaG8gIjxjZW50ZXI+PGgxPldlY29tZSB0byBBenVyZSBDbG91ZC1Jbml0IE5naW54IEV4YW1wbGU8L2gxPjxicj48L2NlbnRlcj4iID4gL3Zhci93d3cvaHRtbC9pbmRleC5odG1sDQoNCiMgcmVzdGFydCBBcGFjaGUNCmFwYWNoZWN0bCByZXN0YXJ0"
         }
     },
     "variables": {

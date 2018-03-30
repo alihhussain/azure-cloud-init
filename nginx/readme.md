@@ -11,13 +11,19 @@ This template deploys a Nginx web server on a Ubuntu Virtual Machine. This templ
 
 1. To deploy the template:
 ```bash
-export rgName="nginxCloudInit" && \
+export rgName="nginxCloudInit2" && \
 export rgLocation="eastus" && \
 az group create -l $rgLocation -n $rgName && \
 az group deployment create --name MasterDeployment --resource-group $rgName --template-file ./azuredeploy.json
 
 # Onces deployed run the following command to see the FQDN for the Web Page
 az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.http.value | awk -F '"' '{print $2}'
+az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.sshCommand.value | awk -F '"' '{print $2}'
+az group deployment show -n MasterDeployment -g $rgName --query properties.parameters.userScript.value | awk -F '"' '{print $2}' | base64 --decode
+
+# Once done delete via
+az group delete -g $rgName -y --no-wait
+
 ```
 
 To view the output:
@@ -32,4 +38,6 @@ cd /var/lib/cloud/instances
 vim user-data.txt
 cat /var/log/cloud-init.log | grep config-scripts-user
 cat /var/log/boot.log
+
+cat /var/www/html/index.html
 ```
