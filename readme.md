@@ -3,4 +3,3 @@ These templates will walkthrough deploying and configuring VMs through ARM templ
 
 The following templates have already been created
 * [Deploying Apache](https://github.com/alihhussain/azure-cloud-init/tree/master/apache)
-* 
