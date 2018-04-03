@@ -1,0 +1,15 @@
+#cloud-config
+package_upgrade: true
+
+packages:
+  - apache2
+
+write_files:
+  - content: |
+          #!/bin/bash
+          echo "Test" > /tmp/test.txt
+    path: /tmp/sample.sh
+    permissions: 0755
+
+run-cmd:
+  - [ sh, -xc, "echo $(cat /tmp/test.txt) ': hello world!'" ]
