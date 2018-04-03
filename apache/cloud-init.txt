@@ -12,6 +12,6 @@ write_files:
     permissions: 0755
 
 run-cmd:
-  - [ sh, -xc, "echo $(cat /tmp/test.txt) ': hello world!'" ]
+  - [ sh, -xc, "cat /tmp/test.txt > /tmp/test2.txt" ]
 
-# - I2Nsb3VkLWNvbmZpZw0KcGFja2FnZV91cGdyYWRlOiB0cnVlDQoNCnBhY2thZ2VzOg0KICAtIGFwYWNoZTINCg0Kd3JpdGVfZmlsZXM6DQogIC0gY29udGVudDogfA0KICAgICAgICAgICMhL2Jpbi9iYXNoDQogICAgICAgICAgZWNobyAiVGVzdCIgPiAvdG1wL3Rlc3QudHh0DQogICAgcGF0aDogL3RtcC9zYW1wbGUuc2gNCiAgICBwZXJtaXNzaW9uczogMDc1NQ0KDQpydW4tY21kOg0KICAtIFsgc2gsIC14YywgImVjaG8gJChjYXQgL3RtcC90ZXN0LnR4dCkgJzogaGVsbG8gd29ybGQhJyIgXQ==
+# - I2Nsb3VkLWNvbmZpZw0KcGFja2FnZV91cGdyYWRlOiB0cnVlDQoNCnBhY2thZ2VzOg0KICAtIGFwYWNoZTINCg0Kd3JpdGVfZmlsZXM6DQogIC0gY29udGVudDogfA0KICAgICAgICAgICMhL2Jpbi9iYXNoDQogICAgICAgICAgZWNobyAiVGVzdCIgPiAvdG1wL3Rlc3QudHh0DQogICAgcGF0aDogL3RtcC9zYW1wbGUuc2gNCiAgICBwZXJtaXNzaW9uczogMDc1NQ0KDQpydW4tY21kOg0KICAtIFsgc2gsIC14YywgImNhdCAvdG1wL3Rlc3QudHh0ID4gL3RtcC90ZXN0Mi50eHQiIF0=
