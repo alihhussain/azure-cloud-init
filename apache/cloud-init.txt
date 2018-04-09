@@ -12,6 +12,6 @@ write_files:
     permissions: 0755
 
 runcmd:
-  - [ sh cat, "/tmp/sample.sh", ">", "/tmp/ran.txt" ]
+  - [ sh, -c, "echo 'hello' > test.sh " ]
 
-# - I2Nsb3VkLWNvbmZpZw0KcGFja2FnZV91cGdyYWRlOiB0cnVlDQoNCnBhY2thZ2VzOg0KICAtIGFwYWNoZTINCg0Kd3JpdGVfZmlsZXM6DQogIC0gY29udGVudDogfA0KICAgICAgICAgICMhL2Jpbi9iYXNoDQogICAgICAgICAgZWNobyAiVGVzdCIgPiAvdG1wL3Rlc3QudHh0DQogICAgcGF0aDogL3RtcC9zYW1wbGUuc2gNCiAgICBwZXJtaXNzaW9uczogMDc1NQ0KDQpydW5jbWQ6DQogIC0gWyBzaCBjYXQsICIvdG1wL3NhbXBsZS5zaCIsICI+IiwgIi90bXAvcmFuLnR4dCIgXQ==
+# - I2Nsb3VkLWNvbmZpZw0KcGFja2FnZV91cGdyYWRlOiB0cnVlDQoNCnBhY2thZ2VzOg0KICAtIGFwYWNoZTINCg0Kd3JpdGVfZmlsZXM6DQogIC0gY29udGVudDogfA0KICAgICAgICAgICMhL2Jpbi9iYXNoDQogICAgICAgICAgZWNobyAiVGVzdCIgPiAvdG1wL3Rlc3QudHh0DQogICAgcGF0aDogL3RtcC9zYW1wbGUuc2gNCiAgICBwZXJtaXNzaW9uczogMDc1NQ0KDQpydW5jbWQ6DQogIC0gWyBzaCwgLWMsICJlY2hvICdoZWxsbycgPiB0ZXN0LnNoICIgXQ==
