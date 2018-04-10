@@ -10,11 +10,24 @@ write_files:
       echo "Test" > /tmp/test.txt
     path: /tmp/sample.sh
     permissions: 0755
+  - content: |
+      auto lo
+      iface lo inet loopback
+
+      auto eth0
+      iface eth0 inet dhcp
+
+      iface eth0 inet static
+      address {Private_IP}
+      netmask 255.255.255.0
+    path: /etc/network/interfaces.d/50-cloud-init.cfg
+    permissions: 0644
 
 runcmd:
   - [ sh, -c, "echo 'hello' > test.sh " ]
   - [ sh, -c, "/tmp/sample.sh" ]
+  - [ sh, -c, """export privateIP2=$(curl -s -H Metadata:true "http://169.254.169.254/metadata/instance/network/interface/1/ipv4/ipAddress/0/publicIpAddress?api-version=2017-08-01&format=text") && sed -i "s#{Private_IP}#$privateIP2#g" /etc/network/interfaces.d/50-cloud-init.cfg""" ]
 
 output: {all: '| tee -a /var/log/cloud-init-output.log'}
 
-# - I2Nsb3VkLWNvbmZpZw0KcGFja2FnZV91cGdyYWRlOiB0cnVlDQoNCnBhY2thZ2VzOg0KICAtIGFwYWNoZTINCg0Kd3JpdGVfZmlsZXM6DQogIC0gY29udGVudDogfA0KICAgICAgIyEvYmluL2Jhc2gNCiAgICAgIGVjaG8gIlRlc3QiID4gL3RtcC90ZXN0LnR4dA0KICAgIHBhdGg6IC90bXAvc2FtcGxlLnNoDQogICAgcGVybWlzc2lvbnM6IDA3NTUNCg0KcnVuY21kOg0KICAtIFsgc2gsIC1jLCAiZWNobyAnaGVsbG8nID4gdGVzdC5zaCAiIF0NCiAgLSBbIHNoLCAtYywgIi90bXAvc2FtcGxlLnNoIiBdDQoNCm91dHB1dDoge2FsbDogJ3wgdGVlIC1hIC92YXIvbG9nL2Nsb3VkLWluaXQtb3V0cHV0LmxvZyd9
+# - I2Nsb3VkLWNvbmZpZw0KcGFja2FnZV91cGdyYWRlOiB0cnVlDQoNCnBhY2thZ2VzOg0KICAtIGFwYWNoZTINCg0Kd3JpdGVfZmlsZXM6DQogIC0gY29udGVudDogfA0KICAgICAgIyEvYmluL2Jhc2gNCiAgICAgIGVjaG8gIlRlc3QiID4gL3RtcC90ZXN0LnR4dA0KICAgIHBhdGg6IC90bXAvc2FtcGxlLnNoDQogICAgcGVybWlzc2lvbnM6IDA3NTUNCiAgLSBjb250ZW50OiB8DQogICAgICBhdXRvIGxvDQogICAgICBpZmFjZSBsbyBpbmV0IGxvb3BiYWNrDQoNCiAgICAgIGF1dG8gZXRoMA0KICAgICAgaWZhY2UgZXRoMCBpbmV0IGRoY3ANCg0KICAgICAgaWZhY2UgZXRoMCBpbmV0IHN0YXRpYw0KICAgICAgYWRkcmVzcyB7UHJpdmF0ZV9JUH0NCiAgICAgIG5ldG1hc2sgMjU1LjI1NS4yNTUuMA0KICAgIHBhdGg6IC9ldGMvbmV0d29yay9pbnRlcmZhY2VzLmQvNTAtY2xvdWQtaW5pdC5jZmcNCiAgICBwZXJtaXNzaW9uczogMDY0NA0KDQpydW5jbWQ6DQogIC0gWyBzaCwgLWMsICJlY2hvICdoZWxsbycgPiB0ZXN0LnNoICIgXQ0KICAtIFsgc2gsIC1jLCAiL3RtcC9zYW1wbGUuc2giIF0NCiAgLSBbIHNoLCAtYywgIiIiZXhwb3J0IHByaXZhdGVJUDI9JChjdXJsIC1zIC1IIE1ldGFkYXRhOnRydWUgImh0dHA6Ly8xNjkuMjU0LjE2OS4yNTQvbWV0YWRhdGEvaW5zdGFuY2UvbmV0d29yay9pbnRlcmZhY2UvMS9pcHY0L2lwQWRkcmVzcy8wL3B1YmxpY0lwQWRkcmVzcz9hcGktdmVyc2lvbj0yMDE3LTA4LTAxJmZvcm1hdD10ZXh0IikgJiYgc2VkIC1pICJzI3tQcml2YXRlX0lQfSMkcHJpdmF0ZUlQMiNnIiAvZXRjL25ldHdvcmsvaW50ZXJmYWNlcy5kLzUwLWNsb3VkLWluaXQuY2ZnIiIiIF0NCg0Kb3V0cHV0OiB7YWxsOiAnfCB0ZWUgLWEgL3Zhci9sb2cvY2xvdWQtaW5pdC1vdXRwdXQubG9nJ30=
