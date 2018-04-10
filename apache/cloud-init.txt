@@ -8,10 +8,8 @@ write_files:
   - content: |
       #!/bin/bash
       sed -i '10 a iface eth0 inet static' /etc/network/interfaces.d/50-cloud-init.cfg
-      sed -i '11 a address {Private_IP}' /etc/network/interfaces.d/50-cloud-init.cfg
+      sed -i "11 a address $(curl -s -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/1/privateIpAddress?api-version=2017-08-01&format=text')" /etc/network/interfaces.d/50-cloud-init.cfg
       sed -i '12 a netmask 255.255.255.0' /etc/network/interfaces.d/50-cloud-init.cfg
-      curl -s -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/1/privateIpAddress?api-version=2017-08-01&format=text' > /tmp/privateip2
-      sed -i "s#{Private_IP}#$(cat /tmp/privateip2)#g" /etc/network/interfaces.d/50-cloud-init.cfg
       ifdown eth0 && ifup eth0
     path: /tmp/2ndIP.sh
     permissions: 0755
