@@ -21,6 +21,7 @@ write_files:
 runcmd:
   - [ sh, -c, "/tmp/2ndIP.sh" ]
   - [ sh, -c, "/tmp/env.sh" ]
+  - [ sh, -c, "echo ThisCameFromCloudInit >> /tmp/sequence.txt" ]
   
 output: {all: '| tee -a /var/log/cloud-init-output.log'}
 

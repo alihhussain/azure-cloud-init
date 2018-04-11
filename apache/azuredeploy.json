@@ -63,7 +63,7 @@
             "metadata": {
                 "description": "Type in the bash script to run via cloud-init"
             },
-            "defaultValue": "I2Nsb3VkLWNvbmZpZw0KcGFja2FnZV91cGdyYWRlOiB0cnVlDQoNCnBhY2thZ2VzOg0KICAtIGFwYWNoZTINCg0Kd3JpdGVfZmlsZXM6DQogIC0gY29udGVudDogfA0KICAgICAgIyEvYmluL2Jhc2gNCiAgICAgIHNlZCAtaSAnMTAgYSBpZmFjZSBldGgwIGluZXQgc3RhdGljJyAvZXRjL25ldHdvcmsvaW50ZXJmYWNlcy5kLzUwLWNsb3VkLWluaXQuY2ZnDQogICAgICBzZWQgLWkgIjExIGEgYWRkcmVzcyAkKGN1cmwgLXMgLUggTWV0YWRhdGE6dHJ1ZSAnaHR0cDovLzE2OS4yNTQuMTY5LjI1NC9tZXRhZGF0YS9pbnN0YW5jZS9uZXR3b3JrL2ludGVyZmFjZS8wL2lwdjQvaXBBZGRyZXNzLzEvcHJpdmF0ZUlwQWRkcmVzcz9hcGktdmVyc2lvbj0yMDE3LTA4LTAxJmZvcm1hdD10ZXh0JykiIC9ldGMvbmV0d29yay9pbnRlcmZhY2VzLmQvNTAtY2xvdWQtaW5pdC5jZmcNCiAgICAgIHNlZCAtaSAnMTIgYSBuZXRtYXNrIDI1NS4yNTUuMjU1LjAnIC9ldGMvbmV0d29yay9pbnRlcmZhY2VzLmQvNTAtY2xvdWQtaW5pdC5jZmcNCiAgICAgIGlmZG93biBldGgwICYmIGlmdXAgZXRoMA0KICAgIHBhdGg6IC90bXAvMm5kSVAuc2gNCiAgICBwZXJtaXNzaW9uczogMDc1NQ0KICAtIGNvbnRlbnQ6IHwNCiAgICAgICMhL2Jpbi9iYXNoDQogICAgICBwcmludGVudiA+IC90bXAvZW52LnR4dA0KICAgIHBhdGg6IC90bXAvZW52LnNoDQogICAgcGVybWlzc2lvbnM6IDA3NTUNCnJ1bmNtZDoNCiAgLSBbIHNoLCAtYywgIi90bXAvMm5kSVAuc2giIF0NCiAgLSBbIHNoLCAtYywgIi90bXAvZW52LnNoIiBdDQogIA0Kb3V0cHV0OiB7YWxsOiAnfCB0ZWUgLWEgL3Zhci9sb2cvY2xvdWQtaW5pdC1vdXRwdXQubG9nJ30="
+            "defaultValue": "I2Nsb3VkLWNvbmZpZw0KcGFja2FnZV91cGdyYWRlOiB0cnVlDQoNCnBhY2thZ2VzOg0KICAtIGFwYWNoZTINCg0Kd3JpdGVfZmlsZXM6DQogIC0gY29udGVudDogfA0KICAgICAgIyEvYmluL2Jhc2gNCiAgICAgIHNlZCAtaSAnMTAgYSBpZmFjZSBldGgwIGluZXQgc3RhdGljJyAvZXRjL25ldHdvcmsvaW50ZXJmYWNlcy5kLzUwLWNsb3VkLWluaXQuY2ZnDQogICAgICBzZWQgLWkgIjExIGEgYWRkcmVzcyAkKGN1cmwgLXMgLUggTWV0YWRhdGE6dHJ1ZSAnaHR0cDovLzE2OS4yNTQuMTY5LjI1NC9tZXRhZGF0YS9pbnN0YW5jZS9uZXR3b3JrL2ludGVyZmFjZS8wL2lwdjQvaXBBZGRyZXNzLzEvcHJpdmF0ZUlwQWRkcmVzcz9hcGktdmVyc2lvbj0yMDE3LTA4LTAxJmZvcm1hdD10ZXh0JykiIC9ldGMvbmV0d29yay9pbnRlcmZhY2VzLmQvNTAtY2xvdWQtaW5pdC5jZmcNCiAgICAgIHNlZCAtaSAnMTIgYSBuZXRtYXNrIDI1NS4yNTUuMjU1LjAnIC9ldGMvbmV0d29yay9pbnRlcmZhY2VzLmQvNTAtY2xvdWQtaW5pdC5jZmcNCiAgICAgIGlmZG93biBldGgwICYmIGlmdXAgZXRoMA0KICAgIHBhdGg6IC90bXAvMm5kSVAuc2gNCiAgICBwZXJtaXNzaW9uczogMDc1NQ0KICAtIGNvbnRlbnQ6IHwNCiAgICAgICMhL2Jpbi9iYXNoDQogICAgICBwcmludGVudiA+IC90bXAvZW52LnR4dA0KICAgIHBhdGg6IC90bXAvZW52LnNoDQogICAgcGVybWlzc2lvbnM6IDA3NTUNCnJ1bmNtZDoNCiAgLSBbIHNoLCAtYywgIi90bXAvMm5kSVAuc2giIF0NCiAgLSBbIHNoLCAtYywgIi90bXAvZW52LnNoIiBdDQogIC0gWyBzaCwgLWMsICJlY2hvIFRoaXNDYW1lRnJvbUNsb3VkSW5pdCA+PiAvdG1wL3NlcXVlbmNlLnR4dCIgXQ0KICANCm91dHB1dDoge2FsbDogJ3wgdGVlIC1hIC92YXIvbG9nL2Nsb3VkLWluaXQtb3V0cHV0LmxvZyd9"
         }
     },
     "variables": {
@@ -278,7 +278,7 @@
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "fileUris": [],
-                    "commandToExecute": "[concat('echo ', reference(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName')), '2016-03-30').dnsSettings.fqdn, ' > /tmp/publicip1.txt && echo ', reference(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName2')), '2016-03-30').dnsSettings.fqdn, ' > /tmp/publicip2.txt')]"
+                    "commandToExecute": "[concat('echo ', reference(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName')), '2016-03-30').dnsSettings.fqdn, ' > /tmp/publicip1.txt && echo ', reference(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName2')), '2016-03-30').dnsSettings.fqdn, ' > /tmp/publicip2.txt && echo ThisCameFromArmTemplate >> /tmp/sequence.txt')]"
                 }
             }
         }

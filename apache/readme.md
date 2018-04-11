@@ -53,6 +53,10 @@ cd /etc/apache2
 ```
 
 # Feedback
+* No way to write out the script in the Json ARM Template
 * No way to get the public DNS from within the VM
 * No way to fetch tags associated with the VM
 * AWS as both of these features (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)
+* Difference between cloud-init and Extensions
+* Which executes first cloud-init or Extensions
+* 
