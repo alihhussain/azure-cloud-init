@@ -51,3 +51,8 @@ cd /etc/apache2
 
 #Files to create
 ```
+
+# Feedback
+* No way to get the public DNS from within the VM
+* No way to fetch tags associated with the VM
+* AWS as both of these features (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)

@@ -13,10 +13,15 @@ write_files:
       ifdown eth0 && ifup eth0
     path: /tmp/2ndIP.sh
     permissions: 0755
-
+  - content: |
+      #!/bin/bash
+      printenv > /tmp/env.txt
+    path: /tmp/env.sh
+    permissions: 0755
 runcmd:
   - [ sh, -c, "/tmp/2ndIP.sh" ]
-
+  - [ sh, -c, "/tmp/env.sh" ]
+  
 output: {all: '| tee -a /var/log/cloud-init-output.log'}
 
 # - I2Nsb3VkLWNvbmZpZw0KcGFja2FnZV91cGdyYWRlOiB0cnVlDQoNCnBhY2thZ2VzOg0KICAtIGFwYWNoZTINCg0Kd3JpdGVfZmlsZXM6DQogIC0gY29udGVudDogfA0KICAgICAgIyEvYmluL2Jhc2gNCiAgICAgIHNlZCAtaSAnMTAgYSBpZmFjZSBldGgwIGluZXQgc3RhdGljJyAvZXRjL25ldHdvcmsvaW50ZXJmYWNlcy5kLzUwLWNsb3VkLWluaXQuY2ZnDQogICAgICBzZWQgLWkgJzExIGEgYWRkcmVzcyB7UHJpdmF0ZV9JUH0nIC9ldGMvbmV0d29yay9pbnRlcmZhY2VzLmQvNTAtY2xvdWQtaW5pdC5jZmcNCiAgICAgIHNlZCAtaSAnMTIgYSBuZXRtYXNrIDI1NS4yNTUuMjU1LjAnIC9ldGMvbmV0d29yay9pbnRlcmZhY2VzLmQvNTAtY2xvdWQtaW5pdC5jZmcNCiAgICAgIGN1cmwgLXMgLUggTWV0YWRhdGE6dHJ1ZSAnaHR0cDovLzE2OS4yNTQuMTY5LjI1NC9tZXRhZGF0YS9pbnN0YW5jZS9uZXR3b3JrL2ludGVyZmFjZS8wL2lwdjQvaXBBZGRyZXNzLzEvcHJpdmF0ZUlwQWRkcmVzcz9hcGktdmVyc2lvbj0yMDE3LTA4LTAxJmZvcm1hdD10ZXh0JyA+IC90bXAvcHJpdmF0ZWlwMg0KICAgICAgc2VkIC1pICJzI3tQcml2YXRlX0lQfSMkKGNhdCAvdG1wL3ByaXZhdGVpcDIpI2ciIC9ldGMvbmV0d29yay9pbnRlcmZhY2VzLmQvNTAtY2xvdWQtaW5pdC5jZmcNCiAgICAgIGlmZG93biBldGgwICYmIGlmdXAgZXRoMA0KICAgIHBhdGg6IC90bXAvMm5kSVAuc2gNCiAgICBwZXJtaXNzaW9uczogMDc1NQ0KDQpydW5jbWQ6DQogIC0gWyBzaCwgLWMsICIvdG1wLzJuZElQLnNoIiBdDQoNCm91dHB1dDoge2FsbDogJ3wgdGVlIC1hIC92YXIvbG9nL2Nsb3VkLWluaXQtb3V0cHV0LmxvZyd9
