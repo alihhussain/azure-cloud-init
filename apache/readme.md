@@ -59,4 +59,9 @@ cd /etc/apache2
 * AWS as both of these features (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)
 * Difference between cloud-init and Extensions
 * Which executes first cloud-init or Extensions
-* 
+    * ARM First and then cloud-init
+```bash
+root@apacheWebVM:/tmp# cat sequence.txt
+ThisCameFromArmTemplate
+ThisCameFromCloudInit
+``` 
