@@ -11,7 +11,7 @@ This template deploys a apache web server on a Ubuntu Virtual Machine. This temp
 
 1. To deploy the template:
 ```bash
-export rgName="apacheCloud9" && \
+export rgName="apacheCloud" && \
 export rgLocation="eastus" && \
 az group create -l $rgLocation -n $rgName && \
 az group deployment create --name MasterDeployment --resource-group $rgName --template-file ./azuredeploy.json
