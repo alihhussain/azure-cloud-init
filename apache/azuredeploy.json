@@ -67,9 +67,9 @@
         }
     },
     "variables": {
-        "dnsNameForPublicIP": "[concat('publicip', uniquestring(resourceGroup().id))]",
+        "dnsNameForPublicIP": "[concat('firstsite', uniquestring(resourceGroup().id))]",
         "publicIPAddressName": "PublicIP",
-        "dnsNameForPublicIP2": "[concat('publicip2', uniquestring(resourceGroup().id))]",
+        "dnsNameForPublicIP2": "[concat('secondsite', uniquestring(resourceGroup().id))]",
         "publicIPAddressName2": "PublicIP2",
         "publicIPAddressType": "Dynamic",
         "nicName": "WebVMNic",
@@ -89,7 +89,7 @@
             "properties": {
                 "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
                 "dnsSettings": {
-                    "domainNameLabel": "[variables('dnsNameForPublicIP2')]"
+                    "domainNameLabel": "[variables('dnsNameForPublicIP')]"
                 }
             }
         },
@@ -101,7 +101,7 @@
             "properties": {
                 "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
                 "dnsSettings": {
-                    "domainNameLabel": "[variables('dnsNameForPublicIP')]"
+                    "domainNameLabel": "[variables('dnsNameForPublicIP2')]"
                 }
             }
         },
@@ -284,9 +284,12 @@
         }
     ],
     "outputs": {
-        "http": {
+        "firstSite": {
             "type": "string",
             "value": "[concat('http://', reference(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName')), '2016-03-30').dnsSettings.fqdn)]"
+        },"secondSite": {
+            "type": "string",
+            "value": "[concat('http://', reference(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName2')), '2016-03-30').dnsSettings.fqdn)]"
         },
         "sshCommand": {
             "type": "string",
