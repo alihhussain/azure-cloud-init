@@ -13,15 +13,38 @@ write_files:
       ifdown eth0 && ifup eth0
     path: /tmp/2ndIP.sh
     permissions: 0755
+  - content: PGh0bWw+DQogICAgPGhlYWQ+DQogICAgICAgIDx0aXRsZT5XZWxjb21lIHRvIHtGUUROfSE8L3RpdGxlPg0KICAgIDwvaGVhZD4NCiAgICA8Ym9keT4NCiAgICAgICAgPGgxPlN1Y2Nlc3MhICBUaGUge0ZRRE59IHZpcnR1YWwgaG9zdCBpcyB3b3JraW5nITwvaDE+DQogICAgPC9ib2R5Pg0KPC9odG1sPg==
+    encoding: b64
+    path: /tmp/index.html
+    permissions: 0755
+  - content: |
+      <VirtualHost *:80>
+        ServerAdmin admin@{FQDN}
+        ServerName {FQDN}
+        ServerAlias www.{FQDN}
+        DocumentRoot /var/www/{FQDN}/public_html
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+      </VirtualHost>
+    path: /tmp/index.conf
+    permissions: 0755
   - content: |
       #!/bin/bash
-      printenv > /tmp/env.txt
-    path: /tmp/env.sh
+      1stfqdn=$(cat /tmp/publicip1.txt)
+      mkdir -p /var/www/$1stfqdn/public_html
+      cp /tmp/index.html /var/www/$1stfqdn/public_html/index.html
+      sed -i "s#{FQDN}#$1stfqdn#g" /var/www/$1stfqdn/public_html/index.html
+      cp /tmp/index.conf /etc/apache2/sites-available/$1stfqdn.conf
+      sed -i "s#{FQDN}#$1stfqdn#g" /etc/apache2/sites-available/$1stfqdn.conf
+      chown -R apacheAdmin:apacheAdmin /var/www/$1stfqdn/public_html
+      chmod -R 755 /var/www
+      a2ensite /etc/apache2/sites-available/$1stfqdn.conf
+      service apache2 restart
+    path: /tmp/1stsite.sh
     permissions: 0755
 runcmd:
   - [ sh, -c, "/tmp/2ndIP.sh" ]
-  - [ sh, -c, "/tmp/env.sh" ]
-  - [ sh, -c, "echo ThisCameFromCloudInit >> /tmp/sequence.txt" ]
+  - [ sh, -c, "/tmp/1stsite.sh" ]
   
 output: {all: '| tee -a /var/log/cloud-init-output.log'}
 
