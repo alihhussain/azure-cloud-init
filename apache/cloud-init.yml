@@ -11,11 +11,7 @@ write_files:
       sed -i "11 a address $(curl -s -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/1/privateIpAddress?api-version=2017-08-01&format=text')" /etc/network/interfaces.d/50-cloud-init.cfg
       sed -i '12 a netmask 255.255.255.0' /etc/network/interfaces.d/50-cloud-init.cfg
       ifdown eth0 && ifup eth0
-    path: /tmp/2ndIP.sh
-    permissions: 0755
-  - content: PGh0bWw+DQogICAgPGhlYWQ+DQogICAgICAgIDx0aXRsZT5XZWxjb21lIHRvIHtGUUROfSE8L3RpdGxlPg0KICAgIDwvaGVhZD4NCiAgICA8Ym9keT4NCiAgICAgICAgPGgxPlN1Y2Nlc3MhICBUaGUge0ZRRE59IHZpcnR1YWwgaG9zdCBpcyB3b3JraW5nITwvaDE+DQogICAgPC9ib2R5Pg0KPC9odG1sPg==
-    encoding: b64
-    path: /tmp/test.html
+    path: /tmp/setupSecondIP.sh
     permissions: 0755
   - content: |
       <!DOCTYPE html>
@@ -36,7 +32,7 @@ write_files:
           </div>
           <div class="images">
               <img id="azure" src="./src/azure.png" alt="Azure">
-              <img src="./src/apache2.png" alt="Apache2">
+              <img id="azure" src="./src/apache2.png" alt="Apache2">
           </div>
           <table>
               <tbody>
@@ -77,17 +73,6 @@ write_files:
       </body>
 
       </html>
-    path: /tmp/index2.html
-    permissions: 0755
-  - content: |
-      <html>
-          <head>
-              <title>Welcome to {FQDN}!</title>
-          </head>
-          <body>
-              <h1>Success!  The {FQDN} virtual host is working!</h1>
-          </body>
-      </html>
     path: /tmp/index.html
     permissions: 0755
   - content: |
@@ -105,17 +90,24 @@ write_files:
       #!/bin/bash
       firstFQDN=$(cat /tmp/publicip1.txt)
       mkdir -p /var/www/$firstFQDN/public_html
-      cp /tmp/index2.html /var/www/$firstFQDN/public_html/index.html
+      cp /tmp/index.html /var/www/$firstFQDN/public_html/index.html
       sed -i "s#{publicFQDN}#$firstFQDN#g" /var/www/$firstFQDN/public_html/index.html
       cp /tmp/index.conf /etc/apache2/sites-available/$firstFQDN.conf
       sed -i "s#{FQDN}#$firstFQDN#g" /etc/apache2/sites-available/$firstFQDN.conf
+      sed -i "s#{index_Title}#Sample_WebApp#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{heading}#First_Site#g" /var/www/$firstFQDN/public_html/index.html
       sed -i "s#{siteLocation}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/location?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
       sed -i "s#{vmName}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/name?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
       sed -i "s#{osType}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/osType?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
       sed -i "s#{resourceGroup}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/resourceGroupName?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
       sed -i "s#{vmSize}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/vmSize?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
-      sed -i "s#{privateIP}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/privateIpAddress?api-version=2017-08-01&format=text"")#g" /var/www/$firstFQDN/public_html/index.html
-      sed -i "s#{publicIP}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/publicIpAddress?api-version=2017-08-01&format=text"")#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{privateIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/privateIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{publicIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/publicIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$firstFQDN/public_html/index.html
+      mkdir -p /var/www/$firstFQDN/public_html/src
+      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/index.css -o /var/www/$firstFQDN/public_html/src/index.css
+      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/apache2.png -o /var/www/$firstFQDN/public_html/src/apache2.png
+      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/base-grid-alt-alt.svg -o /var/www/$firstFQDN/public_html/src/base-grid-alt-alt.svg
+      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/azure.png -o /var/www/$firstFQDN/public_html/src/azure.png
       chown -R apacheAdmin:apacheAdmin /var/www/$firstFQDN/public_html
       chmod -R 755 /var/www
       a2ensite $firstFQDN.conf
@@ -128,18 +120,31 @@ write_files:
       secondFQDN=$(cat /tmp/publicip2.txt)
       mkdir -p /var/www/$secondFQDN/public_html
       cp /tmp/index.html /var/www/$secondFQDN/public_html/index.html
-      sed -i "s#{FQDN}#$secondFQDN#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{publicFQDN}#$secondFQDN#g" /var/www/$secondFQDN/public_html/index.html
       cp /tmp/index.conf /etc/apache2/sites-available/$secondFQDN.conf
       sed -i "s#{FQDN}#$secondFQDN#g" /etc/apache2/sites-available/$secondFQDN.conf
+      sed -i "s#{index_Title}#Sample_WebApp#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{heading}#Second_Site#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{siteLocation}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/location?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{vmName}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/name?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{osType}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/osType?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{resourceGroup}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/resourceGroupName?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{vmSize}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/vmSize?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{privateIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/privateIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{publicIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/publicIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$secondFQDN/public_html/index.html
+      mkdir -p /var/www/$secondFQDN/public_html/src
+      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/index.css -o /var/www/$secondFQDN/public_html/src/index.css
+      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/apache2.png -o /var/www/$secondFQDN/public_html/src/apache2.png
+      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/base-grid-alt-alt.svg -o /var/www/$secondFQDN/public_html/src/base-grid-alt-alt.svg
+      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/azure.png -o /var/www/$secondFQDN/public_html/src/azure.png
       chown -R apacheAdmin:apacheAdmin /var/www/$secondFQDN/public_html
       chmod -R 755 /var/www
       a2ensite $secondFQDN.conf
-      a2dissite 000-default.conf
       service apache2 restart
     path: /tmp/secondSite.sh
     permissions: 0755
 runcmd:
-  - [ sh, -c, "/tmp/2ndIP.sh" ]
+  - [ sh, -c, "/tmp/setupSecondIP.sh" ]
   - [ sh, -c, "/tmp/firstSite.sh" ]
   - [ sh, -c, "/tmp/secondSite.sh" ]
   
