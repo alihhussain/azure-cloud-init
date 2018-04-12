@@ -17,7 +17,8 @@ az group create -l $rgLocation -n $rgName && \
 az group deployment create --name MasterDeployment --resource-group $rgName --template-file ./azuredeploy.json
 
 # Onces deployed run the following command to see the FQDN for the Web Page
-az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.http.value | awk -F '"' '{print $2}'
+az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.firstSite.value | awk -F '"' '{print $2}' && \
+    az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.secondSite.value | awk -F '"' '{print $2}'
 az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.sshCommand.value | awk -F '"' '{print $2}'
 az group deployment show -n MasterDeployment -g $rgName --query properties.parameters.userScript.value | awk -F '"' '{print $2}' | base64 --decode
 
