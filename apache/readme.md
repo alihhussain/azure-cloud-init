@@ -11,7 +11,7 @@ This template deploys a apache web server on a Ubuntu Virtual Machine. This temp
 
 1. To deploy the template:
 ```bash
-export rgName="apacheCloud" && \
+export rgName="apacheCloud99" && \
 export rgLocation="eastus" && \
 az group create -l $rgLocation -n $rgName && \
 az group deployment create --name MasterDeployment --resource-group $rgName --template-file ./azuredeploy.json
@@ -31,13 +31,6 @@ az group delete -g $rgName -y --no-wait
 cat /dev/null > /root/.ssh/known_hosts
 
 ```
-
-To view the output:
-```bash
-az group deployment show -n MasterDeployment -g $rgName | jq .properties.outputs.http.value
-```
-
-
 
 ```bash
 cd /var/lib/cloud/instances

@@ -218,6 +218,10 @@
             "type": "Microsoft.Compute/virtualMachines",
             "name": "[parameters('vmName')]",
             "location": "[resourceGroup().location]",
+            "tags": {
+                "publicIP1": "[ concat(variables('dnsNameForPublicIP'), '.', resourceGroup().location, '.cloudapp.azure.com')]",
+                "publicIP2": "[ concat(variables('dnsNameForPublicIP2'), '.', resourceGroup().location, '.cloudapp.azure.com')]"
+            },
             "dependsOn": [
                 "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
             ],
