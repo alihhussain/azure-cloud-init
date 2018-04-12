@@ -134,6 +134,7 @@ write_files:
       sed -i "s#{vmSize}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/vmSize?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
       sed -i "s#{privateIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/1/privateIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$secondFQDN/public_html/index.html
       sed -i "s#{publicIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/1/publicIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$secondFQDN/public_html/index.html
+      echo $(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/tags?api-version=2017-08-01&format=text") > /tmp/tags.txt
       mkdir -p /var/www/$secondFQDN/public_html/src
       curl $baseURL/apache/src/index.css -o /var/www/$secondFQDN/public_html/src/index.css
       curl $baseURL/apache/src/apache2.png -o /var/www/$secondFQDN/public_html/src/apache2.png
