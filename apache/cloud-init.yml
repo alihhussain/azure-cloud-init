@@ -88,6 +88,7 @@ write_files:
     permissions: 0755
   - content: |
       #!/bin/bash
+      baseURL="https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master"
       firstFQDN=$(cat /tmp/publicip1.txt)
       mkdir -p /var/www/$firstFQDN/public_html
       cp /tmp/index.html /var/www/$firstFQDN/public_html/index.html
@@ -104,10 +105,10 @@ write_files:
       sed -i "s#{privateIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/privateIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$firstFQDN/public_html/index.html
       sed -i "s#{publicIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/publicIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$firstFQDN/public_html/index.html
       mkdir -p /var/www/$firstFQDN/public_html/src
-      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/index.css -o /var/www/$firstFQDN/public_html/src/index.css
-      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/apache2.png -o /var/www/$firstFQDN/public_html/src/apache2.png
-      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/base-grid-alt-alt.svg -o /var/www/$firstFQDN/public_html/src/base-grid-alt-alt.svg
-      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/azure.png -o /var/www/$firstFQDN/public_html/src/azure.png
+      curl $baseURL/apache/src/index.css -o /var/www/$firstFQDN/public_html/src/index.css
+      curl $baseURL/apache/src/apache2.png -o /var/www/$firstFQDN/public_html/src/apache2.png
+      curl $baseURL/apache/src/base-grid-alt-alt.svg -o /var/www/$firstFQDN/public_html/src/base-grid-alt-alt.svg
+      curl $baseURL/apache/src/azure.png -o /var/www/$firstFQDN/public_html/src/azure.png
       chown -R apacheAdmin:apacheAdmin /var/www/$firstFQDN/public_html
       chmod -R 755 /var/www
       a2ensite $firstFQDN.conf
@@ -117,6 +118,7 @@ write_files:
     permissions: 0755
   - content: |
       #!/bin/bash
+      baseURL="https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master"
       secondFQDN=$(cat /tmp/publicip2.txt)
       mkdir -p /var/www/$secondFQDN/public_html
       cp /tmp/index.html /var/www/$secondFQDN/public_html/index.html
@@ -133,10 +135,10 @@ write_files:
       sed -i "s#{privateIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/1/privateIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$secondFQDN/public_html/index.html
       sed -i "s#{publicIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/1/publicIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$secondFQDN/public_html/index.html
       mkdir -p /var/www/$secondFQDN/public_html/src
-      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/index.css -o /var/www/$secondFQDN/public_html/src/index.css
-      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/apache2.png -o /var/www/$secondFQDN/public_html/src/apache2.png
-      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/base-grid-alt-alt.svg -o /var/www/$secondFQDN/public_html/src/base-grid-alt-alt.svg
-      curl https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/src/azure.png -o /var/www/$secondFQDN/public_html/src/azure.png
+      curl $baseURL/apache/src/index.css -o /var/www/$secondFQDN/public_html/src/index.css
+      curl $baseURL/apache/src/apache2.png -o /var/www/$secondFQDN/public_html/src/apache2.png
+      curl $baseURL/apache/src/base-grid-alt-alt.svg -o /var/www/$secondFQDN/public_html/src/base-grid-alt-alt.svg
+      curl $baseURL/apache/src/azure.png -o /var/www/$secondFQDN/public_html/src/azure.png
       chown -R apacheAdmin:apacheAdmin /var/www/$secondFQDN/public_html
       chmod -R 755 /var/www
       a2ensite $secondFQDN.conf
