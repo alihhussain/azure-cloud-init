@@ -15,6 +15,17 @@ write_files:
     permissions: 0755
   - content: PGh0bWw+DQogICAgPGhlYWQ+DQogICAgICAgIDx0aXRsZT5XZWxjb21lIHRvIHtGUUROfSE8L3RpdGxlPg0KICAgIDwvaGVhZD4NCiAgICA8Ym9keT4NCiAgICAgICAgPGgxPlN1Y2Nlc3MhICBUaGUge0ZRRE59IHZpcnR1YWwgaG9zdCBpcyB3b3JraW5nITwvaDE+DQogICAgPC9ib2R5Pg0KPC9odG1sPg==
     encoding: b64
+    path: /tmp/test.html
+    permissions: 0755
+  - content: |
+      <html>
+          <head>
+              <title>Welcome to {FQDN}!</title>
+          </head>
+          <body>
+              <h1>Success!  The {FQDN} virtual host is working!</h1>
+          </body>
+      </html>
     path: /tmp/index.html
     permissions: 0755
   - content: |
@@ -30,22 +41,37 @@ write_files:
     permissions: 0755
   - content: |
       #!/bin/bash
-      1stfqdn=$(cat /tmp/publicip1.txt)
-      mkdir -p /var/www/$1stfqdn/public_html
-      cp /tmp/index.html /var/www/$1stfqdn/public_html/index.html
-      sed -i "s#{FQDN}#$1stfqdn#g" /var/www/$1stfqdn/public_html/index.html
-      cp /tmp/index.conf /etc/apache2/sites-available/$1stfqdn.conf
-      sed -i "s#{FQDN}#$1stfqdn#g" /etc/apache2/sites-available/$1stfqdn.conf
-      chown -R apacheAdmin:apacheAdmin /var/www/$1stfqdn/public_html
+      firstFQDN=$(cat /tmp/publicip1.txt)
+      mkdir -p /var/www/$firstFQDN/public_html
+      cp /tmp/index.html /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{FQDN}#$firstFQDN#g" /var/www/$firstFQDN/public_html/index.html
+      cp /tmp/index.conf /etc/apache2/sites-available/$firstFQDN.conf
+      sed -i "s#{FQDN}#$firstFQDN#g" /etc/apache2/sites-available/$firstFQDN.conf
+      chown -R apacheAdmin:apacheAdmin /var/www/$firstFQDN/public_html
       chmod -R 755 /var/www
-      a2ensite /etc/apache2/sites-available/$1stfqdn.conf
+      a2ensite $firstFQDN.conf
+      a2dissite 000-default.conf
       service apache2 restart
-    path: /tmp/1stsite.sh
+    path: /tmp/firstSite.sh
+    permissions: 0755
+  - content: |
+      #!/bin/bash
+      secondFQDN=$(cat /tmp/publicip2.txt)
+      mkdir -p /var/www/$secondFQDN/public_html
+      cp /tmp/index.html /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{FQDN}#$secondFQDN#g" /var/www/$secondFQDN/public_html/index.html
+      cp /tmp/index.conf /etc/apache2/sites-available/$secondFQDN.conf
+      sed -i "s#{FQDN}#$secondFQDN#g" /etc/apache2/sites-available/$secondFQDN.conf
+      chown -R apacheAdmin:apacheAdmin /var/www/$secondFQDN/public_html
+      chmod -R 755 /var/www
+      a2ensite $secondFQDN.conf
+      a2dissite 000-default.conf
+      service apache2 restart
+    path: /tmp/secondSite.sh
     permissions: 0755
 runcmd:
   - [ sh, -c, "/tmp/2ndIP.sh" ]
-  - [ sh, -c, "/tmp/1stsite.sh" ]
+  - [ sh, -c, "/tmp/firstSite.sh" ]
+  - [ sh, -c, "/tmp/secondSite.sh" ]
   
 output: {all: '| tee -a /var/log/cloud-init-output.log'}
-
-# - I2Nsb3VkLWNvbmZpZw0KcGFja2FnZV91cGdyYWRlOiB0cnVlDQoNCnBhY2thZ2VzOg0KICAtIGFwYWNoZTINCg0Kd3JpdGVfZmlsZXM6DQogIC0gY29udGVudDogfA0KICAgICAgIyEvYmluL2Jhc2gNCiAgICAgIHNlZCAtaSAnMTAgYSBpZmFjZSBldGgwIGluZXQgc3RhdGljJyAvZXRjL25ldHdvcmsvaW50ZXJmYWNlcy5kLzUwLWNsb3VkLWluaXQuY2ZnDQogICAgICBzZWQgLWkgJzExIGEgYWRkcmVzcyB7UHJpdmF0ZV9JUH0nIC9ldGMvbmV0d29yay9pbnRlcmZhY2VzLmQvNTAtY2xvdWQtaW5pdC5jZmcNCiAgICAgIHNlZCAtaSAnMTIgYSBuZXRtYXNrIDI1NS4yNTUuMjU1LjAnIC9ldGMvbmV0d29yay9pbnRlcmZhY2VzLmQvNTAtY2xvdWQtaW5pdC5jZmcNCiAgICAgIGN1cmwgLXMgLUggTWV0YWRhdGE6dHJ1ZSAnaHR0cDovLzE2OS4yNTQuMTY5LjI1NC9tZXRhZGF0YS9pbnN0YW5jZS9uZXR3b3JrL2ludGVyZmFjZS8wL2lwdjQvaXBBZGRyZXNzLzEvcHJpdmF0ZUlwQWRkcmVzcz9hcGktdmVyc2lvbj0yMDE3LTA4LTAxJmZvcm1hdD10ZXh0JyA+IC90bXAvcHJpdmF0ZWlwMg0KICAgICAgc2VkIC1pICJzI3tQcml2YXRlX0lQfSMkKGNhdCAvdG1wL3ByaXZhdGVpcDIpI2ciIC9ldGMvbmV0d29yay9pbnRlcmZhY2VzLmQvNTAtY2xvdWQtaW5pdC5jZmcNCiAgICAgIGlmZG93biBldGgwICYmIGlmdXAgZXRoMA0KICAgIHBhdGg6IC90bXAvMm5kSVAuc2gNCiAgICBwZXJtaXNzaW9uczogMDc1NQ0KDQpydW5jbWQ6DQogIC0gWyBzaCwgLWMsICIvdG1wLzJuZElQLnNoIiBdDQoNCm91dHB1dDoge2FsbDogJ3wgdGVlIC1hIC92YXIvbG9nL2Nsb3VkLWluaXQtb3V0cHV0LmxvZyd9
