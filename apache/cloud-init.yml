@@ -95,7 +95,7 @@ write_files:
       cp /tmp/index.conf /etc/apache2/sites-available/$firstFQDN.conf
       sed -i "s#{FQDN}#$firstFQDN#g" /etc/apache2/sites-available/$firstFQDN.conf
       sed -i "s#{index_Title}#Sample_WebApp#g" /var/www/$firstFQDN/public_html/index.html
-      sed -i "s#{heading}#First_Site#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{heading}#First#g" /var/www/$firstFQDN/public_html/index.html
       sed -i "s#{siteLocation}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/location?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
       sed -i "s#{vmName}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/name?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
       sed -i "s#{osType}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/osType?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
@@ -124,7 +124,7 @@ write_files:
       cp /tmp/index.conf /etc/apache2/sites-available/$secondFQDN.conf
       sed -i "s#{FQDN}#$secondFQDN#g" /etc/apache2/sites-available/$secondFQDN.conf
       sed -i "s#{index_Title}#Sample_WebApp#g" /var/www/$secondFQDN/public_html/index.html
-      sed -i "s#{heading}#Second_Site#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{heading}#Second#g" /var/www/$secondFQDN/public_html/index.html
       sed -i "s#{siteLocation}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/location?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
       sed -i "s#{vmName}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/name?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
       sed -i "s#{osType}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/osType?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
