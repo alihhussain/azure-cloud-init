@@ -11,10 +11,13 @@ This template deploys a apache web server on a Ubuntu Virtual Machine. This temp
 
 1. To deploy the template:
 ```bash
-export rgName="apacheCloud99" && \
+export rgName="apacheCloud88" && \
 export rgLocation="eastus" && \
 az group create -l $rgLocation -n $rgName && \
-az group deployment create --name MasterDeployment --resource-group $rgName --template-file ./azuredeploy.json
+az group deployment create --name MasterDeployment --resource-group $rgName --template-file ./azuredeploy.json > /dev/null && \
+az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.firstSite.value | awk -F '"' '{print $2}' && \
+az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.secondSite.value | awk -F '"' '{print $2}' && \
+az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.sshCommand.value | awk -F '"' '{print $2}'
 
 # Onces deployed run the following command to see the FQDN for the Web Page
 az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.firstSite.value | awk -F '"' '{print $2}' && \
@@ -45,17 +48,3 @@ cd /etc/apache2
 
 #Files to create
 ```
-
-# Feedback
-* No way to write out the script in the Json ARM Template
-* No way to get the public DNS from within the VM
-* No way to fetch tags associated with the VM
-* AWS as both of these features (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)
-* Difference between cloud-init and Extensions
-* Which executes first cloud-init or Extensions
-    * ARM First and then cloud-init
-```bash
-root@apacheWebVM:/tmp# cat sequence.txt
-ThisCameFromArmTemplate
-ThisCameFromCloudInit
-``` 
