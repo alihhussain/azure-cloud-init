@@ -56,7 +56,7 @@
             "metadata": {
                 "description": "SSH rsa public key file as a string."
             },
-            "defaultValue": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsvQoaddMbc5zdqMXnBrn53eatB1hzHwk0rlpg/SUn+B6yMJRq0fvntn1/LWkhsOv2QIOkSZhnZO5rUJuoSaBZuRkXf2wUsva2Z9iaKMozzcadUXCU0y/2ekCPY+8eUZOSvTgmn2K0xT12H+rrzGK6MBgnFgDZ2npROZa4eF4SkMxcMpFbOiOEY53/OiokbwEFUXD3omrhURqJzOOWdaCy4XPjWvjEzpNagTM/uy0habgSVVa3Uj/aF8QkgixJOlgME4jBMyM4uyd/lCsgKvrFquwVbOWZUcic+lZTDVfjIUyqTkq6+avzxtWnxMNrktW7gfOA1Des53Vs4N4QL+af"
+            "defaultValue": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQICtzDUIxW4EyBg/lDHMIlubvqof0MofSDXWlAz7ile2oTzliASa7P+PR+TS+TcACTcxW7MbCnGIBVYB3FaI9tHMelZH63bQ0vqprYOQcBEi3D+g1HRN+oXW/joxfKL44ru8TWgsO0zYx7YmJguCj7taTzPWfurAZkHmyxLATE3DSBQmKZslmfwB15YaWigsIVyDZ4hwUjwXLA7oxz1v5k3S6LfINqvElOgK08eeQhRhA4230ixauDxrSakvJIq3LfjwrfGX4uvb/H5/pExZgYZMDx8JHN2hiEjiEIHc8aMTwTN3JSrQ5XGRCut4tjE3XUiRE02Di5qbH3UegP1nz"
         },
         "userScript": {
             "type": "string",
