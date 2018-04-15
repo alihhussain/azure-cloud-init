@@ -21,7 +21,7 @@ write_files:
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <meta http-equiv="X-UA-Compatible" content="ie=edge">
-          <title>{index_Title}</title>
+          <title>{heading}{index_Title}</title>
           <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Raleway:400" rel="stylesheet"> 
           <link rel="stylesheet" href="./src/index.css">
       </head>
@@ -36,6 +36,18 @@ write_files:
           </div>
           <table>
               <tbody>
+                  <tr>
+                      <th>Public FQDN</th>
+                      <th class="info">{publicFQDN}</th>
+                  </tr>
+                  <tr>
+                      <th>Private IP Address</th>
+                      <th class="info">{privateIP}</th>
+                  </tr>
+                  <tr>
+                      <th>Public IP:</th>
+                      <th class="info">{publicIP}</th>
+                  </tr>
                   <tr>
                       <th>Site Location:</th>
                       <th class="info">{siteLocation}</th>
@@ -57,16 +69,20 @@ write_files:
                       <th class="info">{vmSize}</th>
                   </tr>
                   <tr>
-                      <th>Private IP Address</th>
-                      <th class="info">{privateIP}</th>
+                      <th>Fault Domain</th>
+                      <th class="info">{faultDomain}</th>
                   </tr>
                   <tr>
-                      <th>Public IP:</th>
-                      <th class="info">{publicIP}</th>
+                      <th>Update Domain:</th>
+                      <th class="info">{updateDomain}</th>
                   </tr>
                   <tr>
-                      <th>Public FQDN</th>
-                      <th class="info">{publicFQDN}</th>
+                      <th>Zone</th>
+                      <th class="info">{zone}</th>
+                  </tr>
+                  <tr>
+                      <th>Virtual Machine ID</th>
+                      <th class="info">{vmId}</th>
                   </tr>
               </tbody>
           </table>
@@ -89,7 +105,19 @@ write_files:
   - content: |
       #!/bin/bash
       baseURL="https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master"
-      firstFQDN=$(cat /tmp/publicip1.txt)
+      readTags=$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/tags?api-version=2017-08-01&format=text")
+      tags=$(echo $readTags | tr ";" "\n")
+      for tag in $tags
+      do
+          fqdns=$(echo $tag | tr ":" "\n")
+          for fqdn in $fqdns
+          do
+              if [[ $fqdn = *"publicIP"* ]] || [[ $fqdn = *"second"* ]]; then
+                  continue
+              fi
+              firstFQDN=$fqdn
+          done
+      done
       mkdir -p /var/www/$firstFQDN/public_html
       cp /tmp/index.html /var/www/$firstFQDN/public_html/index.html
       sed -i "s#{publicFQDN}#$firstFQDN#g" /var/www/$firstFQDN/public_html/index.html
@@ -104,6 +132,10 @@ write_files:
       sed -i "s#{vmSize}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/vmSize?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
       sed -i "s#{privateIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/privateIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$firstFQDN/public_html/index.html
       sed -i "s#{publicIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/publicIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{faultDomain}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/platformFaultDomain?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{updateDomain}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/platformUpdateDomain?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{zone}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/compute/zone?api-version=2017-08-01&format=text')#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{vmId}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/compute/vmId?api-version=2017-08-01&format=text')#g" /var/www/$firstFQDN/public_html/index.html
       mkdir -p /var/www/$firstFQDN/public_html/src
       curl $baseURL/apache/src/index.css -o /var/www/$firstFQDN/public_html/src/index.css
       curl $baseURL/apache/src/apache2.png -o /var/www/$firstFQDN/public_html/src/apache2.png
@@ -119,7 +151,19 @@ write_files:
   - content: |
       #!/bin/bash
       baseURL="https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master"
-      secondFQDN=$(cat /tmp/publicip2.txt)
+      readTags=$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/tags?api-version=2017-08-01&format=text")
+      tags=$(echo $readTags | tr ";" "\n")
+      for tag in $tags
+      do
+          fqdns=$(echo $tag | tr ":" "\n")
+          for fqdn in $fqdns
+          do
+              if [[ $fqdn = *"publicIP"* ]] || [[ $fqdn = *"first"* ]]; then
+                  continue
+              fi
+              secondFQDN=$fqdn
+          done
+      done      
       mkdir -p /var/www/$secondFQDN/public_html
       cp /tmp/index.html /var/www/$secondFQDN/public_html/index.html
       sed -i "s#{publicFQDN}#$secondFQDN#g" /var/www/$secondFQDN/public_html/index.html
@@ -134,7 +178,10 @@ write_files:
       sed -i "s#{vmSize}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/vmSize?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
       sed -i "s#{privateIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/1/privateIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$secondFQDN/public_html/index.html
       sed -i "s#{publicIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/1/publicIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$secondFQDN/public_html/index.html
-      echo $(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/tags?api-version=2017-08-01&format=text") > /tmp/tags.txt
+      sed -i "s#{faultDomain}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/platformFaultDomain?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{updateDomain}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/platformUpdateDomain?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{zone}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/compute/zone?api-version=2017-08-01&format=text')#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{vmId}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/compute/vmId?api-version=2017-08-01&format=text')#g" /var/www/$secondFQDN/public_html/index.html
       mkdir -p /var/www/$secondFQDN/public_html/src
       curl $baseURL/apache/src/index.css -o /var/www/$secondFQDN/public_html/src/index.css
       curl $baseURL/apache/src/apache2.png -o /var/www/$secondFQDN/public_html/src/apache2.png
