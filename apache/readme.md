@@ -49,3 +49,25 @@ cd /etc/apache2
 
 #Files to create
 ```
+
+## File permission issue
+Error Message
+```bash
+The authenticity of host 'firstsite<RandomCharacters>.eastus.cloudapp.azure.com (<RandomIP>)' can't be established.
+ECDSA key fingerprint is SHA256:HO/V33FDHMi+j12r7mnu3GoovHJ79/l6HBbohsyP4tI.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'firstsite<RandomCharacters>.eastus.cloudapp.azure.com,<RandomIP>' (ECDSA) to the list of known hosts.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions 0644 for './id_rsa' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Load key "./id_rsa": bad permissions
+Permission denied (publickey).
+```
+To correct this behavior 
+
+```bash
+chmod 400 ./apache/apacheSshKeys/id_rsa
+```
