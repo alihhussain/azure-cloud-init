@@ -33,6 +33,7 @@ az group delete -g $rgName -y --no-wait
 
 cat /dev/null > /root/.ssh/known_hosts
 
+https://www.digitalocean.com/community/tutorials/how-to-set-up-apache-virtual-hosts-on-ubuntu-16-04
 ```
 
 ```bash
