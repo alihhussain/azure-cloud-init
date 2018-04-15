@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{index_Title}</title>
+    <title>{heading} {index_Title}</title>
     <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Raleway:400" rel="stylesheet"> 
     <link rel="stylesheet" href="./src/index.css">
 </head>
@@ -20,6 +20,18 @@
     </div>
     <table>
         <tbody>
+            <tr>
+                <th>Public FQDN</th>
+                <th class="info">{publicFQDN}</th>
+            </tr>
+            <tr>
+                <th>Private IP Address</th>
+                <th class="info">{privateIP}</th>
+            </tr>
+            <tr>
+                <th>Public IP:</th>
+                <th class="info">{publicIP}</th>
+            </tr>
             <tr>
                 <th>Site Location:</th>
                 <th class="info">{siteLocation}</th>
@@ -41,16 +53,20 @@
                 <th class="info">{vmSize}</th>
             </tr>
             <tr>
-                <th>Private IP Address</th>
-                <th class="info">{privateIP}</th>
+                <th>Fault Domain</th>
+                <th class="info">{faultDomain}</th>
             </tr>
             <tr>
-                <th>Public IP:</th>
-                <th class="info">{publicIP}</th>
+                <th>Update Domain:</th>
+                <th class="info">{updateDomain}</th>
             </tr>
             <tr>
-                <th>Public FQDN</th>
-                <th class="info">{publicFQDN}</th>
+                <th>Zone</th>
+                <th class="info">{zone}</th>
+            </tr>
+            <tr>
+                <th>Virtual Machine ID</th>
+                <th class="info">{vmId}</th>
             </tr>
         </tbody>
     </table>
