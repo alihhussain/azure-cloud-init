@@ -102,6 +102,8 @@ rm -f ./id_rsa ./azuredeploy.json
 # Detailed Walkthrough
 In this section a detailed step by step walkthrough of the different aspects of the cloud-init deployment are going to be illustrated.
 
+This template utilizes only the **cloud-init** functionality to run configurations, bootstrap the VM, and download appropriate runtime values such as Public IP address among others to setup two different Apache Websites. No VM extension resource is utilized to achieve this.
+
 ## Directory Structure
 
 <img src="./src/detailed/directory.JPG" width="400" height="200" title="Directory Structure">
