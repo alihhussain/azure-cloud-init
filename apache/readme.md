@@ -161,10 +161,21 @@ This ```"customData": "[parameters('userScript')]"``` is added to the ```"Micros
 }
 ```
 
-```CustomData``` is populated with a cloud-init script that is base64 encoded.
+```CustomData``` is populated with a cloud-init script that is base64 encoded.<br>
+Once the ```cloud-init.yml``` file is created. Run ```base64 cloud-init.yml``` to encode it for use within the ARM template.
 
+Example ```cloud-init.yml```
+```bash
+$ cat cloud-init.yml
+#!/bin/bash
+echo "Hello World"
+```
 
-
+Example base64 encoded ```cloud-init.yml```:
+```bash
+$ base64 cloud-init.yml
+IyEvYmluL2Jhc2gKZWNobyAiSGVsbG8gV29ybGQiCg==
+```
 
 ## Walk-Through - cloud-init.yml Walk-Through
 ## Walk-Through - Second IP Configuration (Inside of VM)
