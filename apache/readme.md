@@ -138,7 +138,7 @@ This template deploys out the following resources:
 There are three sections of note in this template:
 * [Additional customData schema for VM](#custom-data-schema)
 * [Using Tags](#tags-to-pass-runtime-values-to-vm) to pass runtime values to VM that are not available via [Azure Instance Metadata Service](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/instance-metadata-service) such as Public IP FQDN
-* Utilizing *outputs* section of the ARM template to spit out runtime values
+* [Utilizing *outputs* section of the ARM template to spit out runtime values](#outputs-section-arm-template)
 
 #### Custom Data Schema
 This ```"customData": "[parameters('userScript')]"``` is added to the ```"Microsoft.Compute/virtualMachines"``` schema
@@ -206,11 +206,72 @@ In the following example the FQDN of both the public IP addresses is being conca
 ```
 Example Tag on VM<br><br>
 <p align="center"><img src="./src/detailed/tags.JPG" width="400" height="200" title="Tags"><p>
+In the Cloud-Init section a detailed look on how to fetch the tags and utilize them is discussed.
 
 ## Walk-Through - cloud-init.yml Walk-Through
 <p align="center">
 <img src="./src/detailed/cloud-init.jpg" width="400" height="200" title="Cloud-Init">
 </p>
+
+#### Outputs Section ARM Template
+There are 3 values of use that are needed to start consuming the Web Pages and the deployed VM.
+
+* First Web Page FQDN
+* Second Web Page FQDN
+* Command to SSH into the deployed VM.
+
+The ```outputs``` section within the ARM template is utilize to emit these values.
+Example ```outputs``` section:
+```json
+"outputs": {
+    "firstSite": {
+        "type": "string",
+        "value": "[concat('http://', reference(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName')), '2016-03-30').dnsSettings.fqdn)]"
+    },"secondSite": {
+        "type": "string",
+        "value": "[concat('http://', reference(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName2')), '2016-03-30').dnsSettings.fqdn)]"
+    },
+    "sshCommand": {
+        "type": "string",
+        "value": "[concat('ssh -i ./id_rsa ', parameters('adminUsername'), '@', reference(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName')), '2016-03-30').dnsSettings.fqdn)]"
+    }
+}
+```
+
+To Fetch these values once the deployment as succeeded.
+
+1. First Site FQDN
+```bash
+export rgName="apacheCloud"
+
+az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.firstSite.value
+```
+
+Example Output:
+```bash
+"http://firstsites6u63hztcpeyo.eastus.cloudapp.azure.com"
+```
+
+2. Second Site FQDN
+```bash
+export rgName="apacheCloud"
+
+az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.secondSite.value
+```
+Example Output:
+```bash
+"http://secondsites6u63hztcpeyo.eastus.cloudapp.azure.com"
+```
+3. SSH Command to log into the deployed VM
+```bash
+export rgName="apacheCloud"
+
+az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.sshCommand.value | awk -F '"' '{print $2}'
+```
+Example Output:
+```bash
+ssh -i ./id_rsa apacheAdmin@firstsites6u63hztcpeyo.eastus.cloudapp.azure.com
+```
 
 ## Walk-Through - Second IP Configuration (Inside of VM)
 ## Walk-Through - Apache Configuration
