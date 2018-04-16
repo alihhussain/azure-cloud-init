@@ -10,7 +10,7 @@
 
 This template deploys a set of Azure resources and configures the resources to server two Apache web pages.
 
-![Single VM Multi Site Architecture](./Single-VM-Multi-Site.jpg)
+![Single VM Multi Site Architecture](./src/Single-VM-Multi-Site.jpg)
 
 The Azure Resources deployed will be:
 * Virtual Network
