@@ -96,6 +96,13 @@ az group delete -g $rgName -y --no-wait
 # Delete the downloaded template and private key
 rm -f ./id_rsa ./azuredeploy.json
 ```
+
+# Detailed Walkthrough
+In this section a detailed step by step walkthrough of the different aspects of the cloud-init deployment are going to be illustrated.
+
+## Directory Structure
+![Directory Structure](./src/detailed/directory.JPG | width=40)
+
 # Appendix 
 ```bash
 export rgName="apacheCloud" && \
