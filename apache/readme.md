@@ -84,7 +84,7 @@ ECDSA key fingerprint is 45:cf:b9:ad:c4:c5:dd:9b:f7:0c:ef:a4:e2:6f:a5:3b.
 Are you sure you want to continue connecting (yes/no)? yes
 ```
 
-# To deploy the template:
+# Appendix 
 ```bash
 export rgName="apacheCloud" && \
 export rgLocation="eastus" && \
