@@ -86,6 +86,15 @@ ECDSA key fingerprint is 45:cf:b9:ad:c4:c5:dd:9b:f7:0c:ef:a4:e2:6f:a5:3b.
 Are you sure you want to continue connecting (yes/no)? yes
 ```
 
+## Decode Cloud-Init Script that was used to bootstrap the VM
+1. Fetch the encoded message from deployment and decode it.
+```bash
+export rgName="apacheCloud"
+
+az group deployment show -n MasterDeployment -g $rgName --query properties.parameters.userScript.value | awk -F '"' '{print $2}' | base64 --decode
+```
+
+
 ## Delete the Deployment
 
 Delete the resource group and the resources deployed within it
@@ -132,7 +141,7 @@ There are three sections of note in this template:
 * Utilizing *outputs* section of the ARM template to spit out runtime values
 
 #### Custom Data Schema
-
+This ```"customData": "[parameters('userScript')]"``` is added to the ```"Microsoft.Compute/virtualMachines"``` schema
 ```json
 "osProfile": {
     "computerName": "[parameters('vmName')]",
@@ -151,6 +160,10 @@ There are three sections of note in this template:
     }
 }
 ```
+
+```CustomData``` is populated with a cloud-init script that is base64 encoded.
+
+
 
 
 ## Walk-Through - cloud-init.yml Walk-Through
