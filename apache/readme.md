@@ -7,6 +7,7 @@
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
+
 This template deploys a set of Azure resources and configures the resources to server two Apache web pages.
 
 ![Single VM Multi Site Architecture](./Single-VM-Multi-Site.jpg)
