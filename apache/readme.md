@@ -49,13 +49,22 @@ export rgName="apacheCloud"
 az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.firstSite.value | awk -F '"' '{print $2}' && \
 az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.secondSite.value | awk -F '"' '{print $2}'
 ```
+
+5. Verify the Sites are functional
+![First Site](./src/firstSite.jpg)
+![Second Site](./src/secondSite.jpg)
+
 ### Optional - SSH into the VM
 1. Fetch the SSH Private Key
 
 ```bash
 wget https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/apacheSshKeys/id_rsa
 ```
-2. Fetch the login command from deployment
+2. Change Permissions on the downloaded private key
+```bash
+chmod 600 ./id_rsa
+```
+3. Fetch the login command from deployment
 ```bash
 export rgName="apacheCloud"
 
@@ -63,9 +72,18 @@ az group deployment show -n MasterDeployment -g $rgName --query properties.outpu
 ```
 Sample Output:
 ```bash
-
+ssh -i ./id_rsa apacheAdmin@firstsite<RandomUniqID>.eastus.cloudapp.azure.com
 ```
-3. 
+4. Log into the VM
+```bash
+ssh -i ./id_rsa apacheAdmin@firstsite<RandomUniqID>.eastus.cloudapp.azure.com
+
+#Accept the warning by typing "yes"
+The authenticity of host 'firstsites6u63hztcpeyo.eastus.cloudapp.azure.com (52.224.13.14)' can't be established.
+ECDSA key fingerprint is 45:cf:b9:ad:c4:c5:dd:9b:f7:0c:ef:a4:e2:6f:a5:3b.
+Are you sure you want to continue connecting (yes/no)? yes
+```
+
 # To deploy the template:
 ```bash
 export rgName="apacheCloud" && \

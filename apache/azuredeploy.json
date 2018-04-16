@@ -278,7 +278,7 @@
         },
         "sshCommand": {
             "type": "string",
-            "value": "[concat('ssh -i ./apache/apacheSshKeys/id_rsa ', parameters('adminUsername'), '@', reference(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName')), '2016-03-30').dnsSettings.fqdn)]"
+            "value": "[concat('ssh -i ./id_rsa ', parameters('adminUsername'), '@', reference(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName')), '2016-03-30').dnsSettings.fqdn)]"
         }
     }
 }
