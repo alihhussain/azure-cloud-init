@@ -84,6 +84,14 @@ ECDSA key fingerprint is 45:cf:b9:ad:c4:c5:dd:9b:f7:0c:ef:a4:e2:6f:a5:3b.
 Are you sure you want to continue connecting (yes/no)? yes
 ```
 
+## Delete the Deployment
+
+Delete the resource group and the resources deployed within it
+```bash
+export rgName="apacheCloud"
+
+az group delete -g $rgName -y --no-wait
+```
 # Appendix 
 ```bash
 export rgName="apacheCloud" && \
