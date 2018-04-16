@@ -101,7 +101,9 @@ rm -f ./id_rsa ./azuredeploy.json
 In this section a detailed step by step walkthrough of the different aspects of the cloud-init deployment are going to be illustrated.
 
 ## Directory Structure
-![Directory Structure](./src/detailed/directory.JPG | width=40)
+<p align="center">
+<img src="./src/detailed/directory.JPG" width="200" height="100" title="Directory Structure">
+</p>
 
 # Appendix 
 ```bash
