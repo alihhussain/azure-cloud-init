@@ -103,7 +103,7 @@ In this section a detailed step by step walkthrough of the different aspects of 
 
 ## Directory Structure
 
-<img src="./src/detailed/directory.JPG" width="200" height="100" title="Directory Structure">
+<img src="./src/detailed/directory.JPG" width="400" height="200" title="Directory Structure">
 
 * **apacheSshKeys** - Directory where the private and public key for the deployment is stored
 * **src** - Directory where source content for the web page is stored
