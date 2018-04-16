@@ -1,16 +1,16 @@
 # Apache Two Site deployment on Azure
-
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Falihhussain%2Fazure-cloud-init%2Fmaster%2Fapache%2Fazuredeploy.json" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-</a>
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Falihhussain%2Fazure-cloud-init%2Fmaster%2Fapache%2Fazuredeploy.json" target="_blank">
-    <img src="http://armviz.io/visualizebutton.png"/>
-</a>
-
+<p align="center">
+    <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Falihhussain%2Fazure-cloud-init%2Fmaster%2Fapache%2Fazuredeploy.json" target="_blank">
+        <img src="http://azuredeploy.net/deploybutton.png"/>
+    </a>
+    <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Falihhussain%2Fazure-cloud-init%2Fmaster%2Fapache%2Fazuredeploy.json" target="_blank">
+        <img src="http://armviz.io/visualizebutton.png"/>
+    </a>
+</p>
 
 This template deploys a set of Azure resources and configures the resources to server two Apache web pages.
 <p align="center">
-<img src="./src/Single-VM-Multi-Site.jpg" width="600" height="400" title="Single VM Multi Site Architecture">
+    <img src="./src/Single-VM-Multi-Site.jpg" width="600" height="400" title="Single VM Multi Site Architecture">
 </p>
 
 The Azure Resources deployed will be:
