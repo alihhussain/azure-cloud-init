@@ -111,6 +111,12 @@ In this section a detailed step by step walkthrough of the different aspects of 
 * **azuredeploy.parameters.json** - Azure ARM Template Parameter File
 * **cloud-init.yml** - Source cloud-init file that is fed into the ARM template (base64 encoded) 
 
+## ARM Template (azuredeploy.json) Walk-Through
+## cloud-init.yml Walk-Through
+## Apache Configuration
+## Second IP Configuration
+## Runtime Configuration Values
+
 
 
 # Appendix 
