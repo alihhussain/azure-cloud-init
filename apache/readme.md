@@ -7,7 +7,12 @@
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
-This template deploys a apache web server on a Ubuntu Virtual Machine. This template also deploys a Public IP address, Network Security Group, Virtual Network, Network Interface, and a Virtual Machine.
+This template deploys a set of Azure resources and configures the resources to server two Apache web pages.
+
+![Single VM Multi Site Architecture](./Single-VM-Multi-Site.jpg)
+
+
+a apache web server on a Ubuntu Virtual Machine. This template also deploys a Public IP address, Network Security Group, Virtual Network, Network Interface, and a Virtual Machine.
 
 1. To deploy the template:
 ```bash
