@@ -51,7 +51,7 @@ az group deployment show -n MasterDeployment -g $rgName --query properties.outpu
 ```
 
 5. Verify the Sites are functional
-![First Site](./src/firstSite.jpg)
+![First Site](./src/firstSite.JPG)
 ![Second Site](./src/secondSite.jpg)
 
 ### Optional - SSH into the VM
