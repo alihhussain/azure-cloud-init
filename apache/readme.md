@@ -137,7 +137,7 @@ This template deploys out the following resources:
 
 There are three sections of note in this template:
 * [Additional customData schema for VM](#custom-data-schema)
-* Using Tags to pass runtime values to VM that are not available via [Azure Instance Metadata Service](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/instance-metadata-service) such as Public IP FQDN
+* [Using Tags](#tags-to-pass-runtime-values-to-vm) to pass runtime values to VM that are not available via [Azure Instance Metadata Service](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/instance-metadata-service) such as Public IP FQDN
 * Utilizing *outputs* section of the ARM template to spit out runtime values
 
 #### Custom Data Schema
@@ -177,7 +177,13 @@ $ base64 cloud-init.yml
 IyEvYmluL2Jhc2gKZWNobyAiSGVsbG8gV29ybGQiCg==
 ```
 
+#### Tags to Pass Runtime Values to VM
+There are certain resource values that cannot be predetermined and are not accessible via instance metadata service sucn as Public IP FQDN.  
 ## Walk-Through - cloud-init.yml Walk-Through
+<p align="center">
+<img src="./src/detailed/cloud-init.jpg" width="400" height="200" title="Cloud-Init">
+</p>
+
 ## Walk-Through - Second IP Configuration (Inside of VM)
 ## Walk-Through - Apache Configuration
 ## Walk-Through - Runtime Configuration Values
