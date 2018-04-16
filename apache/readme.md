@@ -51,9 +51,9 @@ az group deployment show -n MasterDeployment -g $rgName --query properties.outpu
 ```
 
 5. Verify the Sites are functional
-
-<img src="./src/firstSite.JPG" width="400" height="200" title="First Site"><img src="./src/secondSite.JPG" width="400" height="200" title="Second Site">
-
+<p align="center">
+    <img src="./src/firstSite.JPG" width="400" height="200" title="First Site"><img src="./src/secondSite.JPG" width="400" height="200" title="Second Site">
+</p>
 
 ### Optional - SSH into the VM
 1. Fetch the SSH Private Key
@@ -103,7 +103,7 @@ In this section a detailed step by step walkthrough of the different aspects of 
 
 ## Directory Structure
 <p align="center">
-<img src="./src/detailed/directory.JPG" width="200" height="100" title="Directory Structure">
+    <img src="./src/detailed/directory.JPG" width="200" height="100" title="Directory Structure">
 </p>
 
 # Appendix 
