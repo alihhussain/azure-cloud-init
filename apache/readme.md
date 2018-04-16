@@ -178,7 +178,33 @@ IyEvYmluL2Jhc2gKZWNobyAiSGVsbG8gV29ybGQiCg==
 ```
 
 #### Tags to Pass Runtime Values to VM
-There are certain resource values that cannot be predetermined and are not accessible via instance metadata service sucn as Public IP FQDN.  
+There are certain resource values that cannot be predetermined and are not accessible via instance metadata service sucn as Public IP FQDN. <br>
+To resolve this limitation these values are passed to the VM in this template via the Tags schema.
+<br> <br>
+In the following example the FQDN of both the public IP address is being concatenated and passed into the VM.
+
+```json
+{
+    "apiVersion": "2017-03-30",
+    "type": "Microsoft.Compute/virtualMachines",
+    "name": "[parameters('vmName')]",
+    "location": "[resourceGroup().location]",
+    "tags": {
+        "publicIP1": "[ concat(variables('dnsNameForPublicIP'), '.', resourceGroup().location, '.cloudapp.azure.com')]",
+        "publicIP2": "[ concat(variables('dnsNameForPublicIP2'), '.', resourceGroup().location, '.cloudapp.azure.com')]"
+    },
+    "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+    ],
+    "properties": {
+        "hardwareProfile": {
+            "vmSize": "[variables('vmSize')]"
+        }
+    }
+    ...
+}
+```
+
 ## Walk-Through - cloud-init.yml Walk-Through
 <p align="center">
 <img src="./src/detailed/cloud-init.jpg" width="400" height="200" title="Cloud-Init">
