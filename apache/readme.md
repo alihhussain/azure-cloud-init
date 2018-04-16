@@ -9,9 +9,28 @@
 </p>
 
 This template deploys a set of Azure resources and configures the resources to serve two distinct Apache web pages.
+<br><br>
+**Documentation Sections**
+* [Overview](#overview)
+* [Deploy Template](#deploy-template)
+    * [Optional - SSH into the VM](#ssh-into-the-vm)
+    * [Decode Cloud-Init Script that was used to bootstrap the VM](#decode-cloud-init-script-that-was-used-to-bootstrap-the-vm)
+    * [Delete the Deployment](#delete-the-deployment)
+* [Detailed Walkthrough](#detailed-walkthrough)
+    * [Directory Structure](#directory-structure)
+    * [Walk-Through - ARM Template (azuredeploy.json)](#walk-through---arm-template-(azuredeploy.json))
+    * [Walk-Through - cloud-init.yml Walk-Through](#walk-through---cloud-init.yml-walk-through)
+    * [Walk-Through - Second IP Configuration (Inside of VM)](#walk-through---second-ip-configuration-inside-of-vm)
+    * [Walk-Through - Apache Configuration](#walk-through---apache-configuration)
+    * [Walk-Through - Runtime Configuration Values](#walk-through---runtime-configuration-values)
+* [Learnings](#learnings)
+
+## Overview
+
 <p align="center">
     <img src="./src/Single-VM-Multi-Site.jpg" width="600" height="300" title="Single VM Multi Site Architecture">
 </p>
+
 
 The Azure Resources deployed will be:
 * Virtual Network
@@ -56,7 +75,7 @@ az group deployment show -n MasterDeployment -g $rgName --query properties.outpu
     <img src="./src/firstSite.JPG" width="400" height="200" title="First Site"><img src="./src/secondSite.JPG" width="400" height="200" title="Second Site">
 </p>
 
-### Optional - SSH into the VM
+### SSH into the VM
 1. Fetch the SSH Private Key
 
 ```bash
@@ -220,7 +239,7 @@ There are 3 values of use that are needed to start consuming the Web Pages and t
 * Second Web Page FQDN
 * Command to SSH into the deployed VM.
 
-The ```outputs``` section within the ARM template is utilize to emit these values.
+The ```outputs``` section within the ARM template is utilize to emit these values.<br>
 Example ```outputs``` section:
 ```json
 "outputs": {
