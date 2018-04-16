@@ -1,4 +1,4 @@
-# Install apache on a Ubuntu Virtual Machine using Cloud-Init
+# Apache Two Site deployment on Azure
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Falihhussain%2Fazure-cloud-init%2Fmaster%2Fapache%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
@@ -12,10 +12,63 @@ This template deploys a set of Azure resources and configures the resources to s
 
 ![Single VM Multi Site Architecture](./Single-VM-Multi-Site.jpg)
 
+The Azure Resources deployed will be:
+* Virtual Network
+* Network Security Group
+* Virtual Machine
+* Network Interface Card
+* 2 Public IP Addresses
+
+Only certain Marketplace VM images support cloud-init. In this deployment **Ubuntu 16.04-LTS** is used. 
+
+For the latest visit [documentation.](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/using-cloud-init)
 
 a apache web server on a Ubuntu Virtual Machine. This template also deploys a Public IP address, Network Security Group, Virtual Network, Network Interface, and a Virtual Machine.
 
-1. To deploy the template:
+## Deploy Template
+
+1. Create Resource Group 
+```bash
+export rgName="apacheCloud"
+export rgLocation="eastus"
+
+az group create -l $rgLocation -n $rgName
+```
+2. Get Template
+```bash
+wget https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/azuredeploy.json
+```
+3. Deploy Template
+```bash
+export rgName="apacheCloud"
+
+az group deployment create --name MasterDeployment --resource-group $rgName --template-file ./azuredeploy.json
+```
+4. Fetch the FQDN for the two Apache sites
+```bash
+export rgName="apacheCloud"
+
+az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.firstSite.value | awk -F '"' '{print $2}' && \
+az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.secondSite.value | awk -F '"' '{print $2}'
+```
+### Optional - SSH into the VM
+1. Fetch the SSH Private Key
+
+```bash
+wget https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master/apache/apacheSshKeys/id_rsa
+```
+2. Fetch the login command from deployment
+```bash
+export rgName="apacheCloud"
+
+az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.sshCommand.value | awk -F '"' '{print $2}'
+```
+Sample Output:
+```bash
+
+```
+3. 
+# To deploy the template:
 ```bash
 export rgName="apacheCloud" && \
 export rgLocation="eastus" && \
