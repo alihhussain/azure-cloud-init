@@ -126,6 +126,11 @@ This template deploys out the following resources:
 
 **Note there is no extensions resource which typically would be there to bootstrap the VM.**
 
+There are three sections of note in this template:
+* Additional customData schema for VM
+* Using Tags to pass runtime values to VM that are not available via [Azure Instance Metadata Service](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/instance-metadata-service) such as Public IP FQDN
+* Utilizing *outputs* section of the ARM template to spit out runtime values
+
 
 ## Walk-Through - cloud-init.yml Walk-Through
 ## Walk-Through - Second IP Configuration (Inside of VM)
