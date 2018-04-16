@@ -8,7 +8,7 @@
     </a>
 </p>
 
-This template deploys a set of Azure resources and configures the resources to server two Apache web pages.
+This template deploys a set of Azure resources and configures the resources to serve two distinct Apache web pages.
 <p align="center">
     <img src="./src/Single-VM-Multi-Site.jpg" width="600" height="300" title="Single VM Multi Site Architecture">
 </p>
@@ -178,7 +178,7 @@ IyEvYmluL2Jhc2gKZWNobyAiSGVsbG8gV29ybGQiCg==
 ```
 
 #### Tags to Pass Runtime Values to VM
-There are certain resource values that cannot be predetermined and are not accessible via instance metadata service sucn as Public IP FQDN. <br>
+There are certain resource values that cannot be predetermined and are not accessible via instance metadata service such as Public IP FQDN. <br>
 To resolve this limitation these values are passed to the VM in this template via the Tags schema.
 <br> <br>
 In the following example the FQDN of both the public IP address is being concatenated and passed into the VM.
@@ -226,7 +226,7 @@ This section will list out a few points of note:
 export rgName="apacheCloud" && \
 export rgLocation="eastus" && \
 az group create -l $rgLocation -n $rgName && \
-az group deployment create --name MasterDeployment --resource-group $rgName --template-file ./apache/azuredeploy.json > /dev/null && \
+az group deployment create --name MasterDeployment --resource-group $rgName --template-file ./azuredeploy.json > /dev/null && \
 az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.firstSite.value | awk -F '"' '{print $2}' && \
 az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.secondSite.value | awk -F '"' '{print $2}' && \
 az group deployment show -n MasterDeployment -g $rgName --query properties.outputs.sshCommand.value | awk -F '"' '{print $2}'
