@@ -51,8 +51,8 @@ az group deployment show -n MasterDeployment -g $rgName --query properties.outpu
 ```
 
 5. Verify the Sites are functional
-![First Site](./src/firstSite.JPG)
-![Second Site](./src/secondSite.JPG)
+![First Site](./src/firstSite.JPG){:height="50%" width="50%"}
+![Second Site](./src/secondSite.JPG){:height="50%" width="50%"}
 
 ### Optional - SSH into the VM
 1. Fetch the SSH Private Key
