@@ -102,9 +102,16 @@ rm -f ./id_rsa ./azuredeploy.json
 In this section a detailed step by step walkthrough of the different aspects of the cloud-init deployment are going to be illustrated.
 
 ## Directory Structure
-<p align="center">
-    <img src="./src/detailed/directory.JPG" width="200" height="100" title="Directory Structure">
-</p>
+
+<img src="./src/detailed/directory.JPG" width="200" height="100" title="Directory Structure">
+
+* **apacheSshKeys** - Directory where the private and public key for the deployment is stored
+* **src** - Directory where source content for the web page is stored
+* **azuredeploy.json** - Azure ARM Template
+* **azuredeploy.parameters.json** - Azure ARM Template Parameter File
+* **cloud-init.yml** - Source cloud-init file that is fed into the ARM template (base64 encoded) 
+
+
 
 # Appendix 
 ```bash
