@@ -23,8 +23,6 @@ Only certain Marketplace VM images support cloud-init. In this deployment **Ubun
 
 For the latest visit [documentation.](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/using-cloud-init)
 
-a apache web server on a Ubuntu Virtual Machine. This template also deploys a Public IP address, Network Security Group, Virtual Network, Network Interface, and a Virtual Machine.
-
 ## Deploy Template
 
 1. Create Resource Group 
