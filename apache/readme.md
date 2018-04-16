@@ -137,6 +137,11 @@ There are three sections of note in this template:
 ## Walk-Through - Apache Configuration
 ## Walk-Through - Runtime Configuration Values
 
+# Learnings
+This section will list out a few points of note:
+* If both cloud-init and custom extensions are utilized within the same template. The order of execution is as follows:
+    1. Custom Extension executes first within the VM at runtime
+    2. CustomData (Cloud-init) executes second within the VM at runtime
 
 
 # Appendix 
