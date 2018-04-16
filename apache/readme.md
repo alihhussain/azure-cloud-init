@@ -120,6 +120,7 @@ This template deploys out the following resources:
 * 1st Azure Public IP - Default Value: ```PublicIP```
 * 2nd Azure Public IP - Default Value: ```PublicIP2```
 * Network Security Group - Default Value: ```defaultNsg```
+* Virtual Network - Default Value: ```apacheVnet```
 * Network Interface Card - Default Value: ```WebVMNic```
 * Virtual Machine - Default Value: ```apacheWebVM```
 
