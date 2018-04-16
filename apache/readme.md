@@ -181,7 +181,7 @@ IyEvYmluL2Jhc2gKZWNobyAiSGVsbG8gV29ybGQiCg==
 There are certain resource values that cannot be predetermined and are not accessible via instance metadata service such as Public IP FQDN. <br>
 To resolve this limitation these values are passed to the VM in this template via the Tags schema.
 <br> <br>
-In the following example the FQDN of both the public IP address is being concatenated and passed into the VM.
+In the following example the FQDN of both the public IP addresses is being concatenated and passed into the VM.
 
 ```json
 {
@@ -204,6 +204,8 @@ In the following example the FQDN of both the public IP address is being concate
     ...
 }
 ```
+Example Tag on VM<br><br>
+<p align="center"><img src="./src/detailed/tags.JPG" width="400" height="200" title="Tags"><p>
 
 ## Walk-Through - cloud-init.yml Walk-Through
 <p align="center">
