@@ -117,11 +117,11 @@ This template utilizes only the **cloud-init** functionality to run configuratio
 ## Walk-Through - ARM Template (azuredeploy.json)
 This template deploys out the following resources:
 
-* 1st Azure Public IP - Default Value: *PublicIP*
-* 2nd Azure Public IP - Default Value: *PublicIP2*
-* Network Security Group - Default Value: *defaultNsg*
-* Network Interface Card - Default Value: *WebVMNic*
-* Virtual Machine - Default Value: *apacheWebVM*
+* 1st Azure Public IP - Default Value: ```PublicIP```
+* 2nd Azure Public IP - Default Value: ```PublicIP2```
+* Network Security Group - Default Value: ```defaultNsg```
+* Network Interface Card - Default Value: ```WebVMNic```
+* Virtual Machine - Default Value: ```apacheWebVM```
 
 **Note there is no extensions resource which typically would be there to bootstrap the VM.**
 
