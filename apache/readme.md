@@ -90,7 +90,11 @@ Delete the resource group and the resources deployed within it
 ```bash
 export rgName="apacheCloud"
 
+#Delete Resource Group
 az group delete -g $rgName -y --no-wait
+
+# Delete the downloaded template and private key
+rm -f ./id_rsa ./azuredeploy.json
 ```
 # Appendix 
 ```bash
