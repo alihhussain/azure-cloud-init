@@ -1,0 +1,238 @@
+#cloud-config
+package_upgrade: true
+
+packages:
+  - apache2
+
+write_files:
+  - content: |
+      #!/bin/bash
+      # This script will configure the 2nd Azure Public IP resource to this VM. Until this is done any requests to the 2nd IP will return with a 500 error. 
+      sed -i '10 a iface eth0 inet static' /etc/network/interfaces.d/50-cloud-init.cfg
+      sed -i "11 a address $(curl -s -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/1/privateIpAddress?api-version=2017-08-01&format=text')" /etc/network/interfaces.d/50-cloud-init.cfg
+      sed -i '12 a netmask 255.255.255.0' /etc/network/interfaces.d/50-cloud-init.cfg
+      ifdown eth0 && ifup eth0
+    path: /tmp/setupSecondIP.sh
+    permissions: 0755
+#   The following (/tmp/index.html) is a genericized html page that
+#   has its values modified with runtime configuration values 
+  - content: |
+      <!DOCTYPE html>
+      <html lang="en">
+
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <meta http-equiv="X-UA-Compatible" content="ie=edge">
+          <title>{heading} {index_Title}</title>
+          <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Raleway:400" rel="stylesheet"> 
+          <link rel="stylesheet" href="./src/index.css">
+      </head>
+
+      <body>
+          <div>
+              <h1>This is your {heading} Test Site</h1>
+          </div>
+          <div class="images">
+              <img id="azure" src="./src/azure.png" alt="Azure">
+              <img id="azure" src="./src/apache2.png" alt="Apache2">
+          </div>
+          <table>
+              <tbody>
+                  <tr>
+                      <th>Public FQDN</th>
+                      <th class="info">{publicFQDN}</th>
+                  </tr>
+                  <tr>
+                      <th>Private IP Address</th>
+                      <th class="info">{privateIP}</th>
+                  </tr>
+                  <tr>
+                      <th>Public IP:</th>
+                      <th class="info">{publicIP}</th>
+                  </tr>
+                  <tr>
+                      <th>Site Location:</th>
+                      <th class="info">{siteLocation}</th>
+                  </tr>
+                  <tr>
+                      <th>VM Name</th>
+                      <th class="info">{vmName}</th>
+                  </tr>
+                  <tr>
+                      <th>OS Type:</th>
+                      <th class="info">{osType}</th>
+                  </tr>
+                  <tr>
+                      <th>Azure Resource Group</th>
+                      <th class="info">{resourceGroup}</th>
+                  </tr>
+                  <tr>
+                      <th>VM Size:</th>
+                      <th class="info">{vmSize}</th>
+                  </tr>
+                  <tr>
+                      <th>Fault Domain</th>
+                      <th class="info">{faultDomain}</th>
+                  </tr>
+                  <tr>
+                      <th>Update Domain:</th>
+                      <th class="info">{updateDomain}</th>
+                  </tr>
+                  <tr>
+                      <th>Zone</th>
+                      <th class="info">{zone}</th>
+                  </tr>
+                  <tr>
+                      <th>Virtual Machine ID</th>
+                      <th class="info">{vmId}</th>
+                  </tr>
+              </tbody>
+          </table>
+      </body>
+
+      </html>
+    path: /tmp/index.html
+    permissions: 0755
+#   The following (/tmp/index.conf) is a genericized apache .conf file that
+#   is modified at runtime with appropriate values 
+  - content: |
+      <VirtualHost *:80>
+        ServerAdmin admin@{FQDN}
+        ServerName {FQDN}
+        ServerAlias www.{FQDN}
+        DocumentRoot /var/www/{FQDN}/public_html
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+      </VirtualHost>
+    path: /tmp/index.conf
+    permissions: 0755
+#   The following (/tmp/firstSite.sh) configures the first web page 
+#   utilizing the 1st Azure Public IP resource
+  - content: |
+      #!/bin/bash
+      
+      # BaseURL is set as a varible incase the host github Repo is modified
+      baseURL="https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master"
+
+      # In the following code the tag that was assigned by the ARM template is read and processed to be stored in the 'firstFQDN' variable
+      readTags=$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/tags?api-version=2017-08-01&format=text")
+      tags=$(echo $readTags | tr ";" "\n")
+      for tag in $tags
+      do
+          fqdns=$(echo $tag | tr ":" "\n")
+          for fqdn in $fqdns
+          do
+              if [[ $fqdn = *"publicIP"* ]] || [[ $fqdn = *"second"* ]]; then
+                  continue
+              fi
+              firstFQDN=$fqdn
+          done
+      done
+      
+      # The following copies the generic config file and the html page to the appropriate Apache locations
+      mkdir -p /var/www/$firstFQDN/public_html
+      cp /tmp/index.html /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{publicFQDN}#$firstFQDN#g" /var/www/$firstFQDN/public_html/index.html
+      cp /tmp/index.conf /etc/apache2/sites-available/$firstFQDN.conf
+
+      # The following modifies the generic config file to insert the runtime FQDN value
+      sed -i "s#{FQDN}#$firstFQDN#g" /etc/apache2/sites-available/$firstFQDN.conf
+
+      # The following modifies the generic html page to insert the appripriate runtime Azure specific values.
+      sed -i "s#{index_Title}#Sample_WebApp#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{heading}#First#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{siteLocation}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/location?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{vmName}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/name?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{osType}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/osType?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{resourceGroup}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/resourceGroupName?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{vmSize}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/vmSize?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{privateIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/privateIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{publicIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/publicIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{faultDomain}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/platformFaultDomain?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{updateDomain}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/platformUpdateDomain?api-version=2017-08-01&format=text")#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{zone}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/compute/zone?api-version=2017-08-01&format=text')#g" /var/www/$firstFQDN/public_html/index.html
+      sed -i "s#{vmId}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/compute/vmId?api-version=2017-08-01&format=text')#g" /var/www/$firstFQDN/public_html/index.html
+      
+      # The following downloads the appripriate support files that are needed for the sample web page.
+      mkdir -p /var/www/$firstFQDN/public_html/src
+      curl $baseURL/apache/src/index.css -o /var/www/$firstFQDN/public_html/src/index.css
+      curl $baseURL/apache/src/apache2.png -o /var/www/$firstFQDN/public_html/src/apache2.png
+      curl $baseURL/apache/src/base-grid-alt-alt.svg -o /var/www/$firstFQDN/public_html/src/base-grid-alt-alt.svg
+      curl $baseURL/apache/src/azure.png -o /var/www/$firstFQDN/public_html/src/azure.png
+      
+      # The following changes the ownership as per Apache configuration requirements, enables the first web page, and restarts apache service
+      chown -R apacheAdmin:apacheAdmin /var/www/$firstFQDN/public_html
+      chmod -R 755 /var/www
+      a2ensite $firstFQDN.conf
+      a2dissite 000-default.conf
+      service apache2 restart
+    path: /tmp/firstSite.sh
+    permissions: 0755
+#   The following (/tmp/secondSite.sh) configures the 2nd web page 
+#   utilizing the 1st Azure Public IP resource
+  - content: |
+      #!/bin/bash
+
+      # BaseURL is set as a varible incase the host github Repo is modified
+      baseURL="https://raw.githubusercontent.com/alihhussain/azure-cloud-init/master"
+      
+      # In the following code the tag that was assigned by the ARM template is read and processed to be stored in the 'secondFQDN' variable
+      readTags=$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/tags?api-version=2017-08-01&format=text")
+      tags=$(echo $readTags | tr ";" "\n")
+      for tag in $tags
+      do
+          fqdns=$(echo $tag | tr ":" "\n")
+          for fqdn in $fqdns
+          do
+              if [[ $fqdn = *"publicIP"* ]] || [[ $fqdn = *"first"* ]]; then
+                  continue
+              fi
+              secondFQDN=$fqdn
+          done
+      done      
+
+      # The following copies the generic config file and the html page to the appropriate Apache locations
+      mkdir -p /var/www/$secondFQDN/public_html
+      cp /tmp/index.html /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{publicFQDN}#$secondFQDN#g" /var/www/$secondFQDN/public_html/index.html
+      cp /tmp/index.conf /etc/apache2/sites-available/$secondFQDN.conf
+      
+      # The following modifies the generic config file to insert the runtime FQDN value
+      sed -i "s#{FQDN}#$secondFQDN#g" /etc/apache2/sites-available/$secondFQDN.conf
+
+      # The following modifies the generic html page to insert the appripriate runtime Azure specific values.
+      sed -i "s#{index_Title}#Sample_WebApp#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{heading}#Second#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{siteLocation}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/location?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{vmName}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/name?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{osType}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/osType?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{resourceGroup}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/resourceGroupName?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{vmSize}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/vmSize?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{privateIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/1/privateIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{publicIP}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/1/publicIpAddress?api-version=2017-08-01&format=text')#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{faultDomain}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/platformFaultDomain?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{updateDomain}#$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/platformUpdateDomain?api-version=2017-08-01&format=text")#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{zone}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/compute/zone?api-version=2017-08-01&format=text')#g" /var/www/$secondFQDN/public_html/index.html
+      sed -i "s#{vmId}#$(curl -H Metadata:true 'http://169.254.169.254/metadata/instance/compute/vmId?api-version=2017-08-01&format=text')#g" /var/www/$secondFQDN/public_html/index.html
+      
+      # The following downloads the appripriate support files that are needed for the sample web page.
+      mkdir -p /var/www/$secondFQDN/public_html/src
+      curl $baseURL/apache/src/index.css -o /var/www/$secondFQDN/public_html/src/index.css
+      curl $baseURL/apache/src/apache2.png -o /var/www/$secondFQDN/public_html/src/apache2.png
+      curl $baseURL/apache/src/base-grid-alt-alt.svg -o /var/www/$secondFQDN/public_html/src/base-grid-alt-alt.svg
+      curl $baseURL/apache/src/azure.png -o /var/www/$secondFQDN/public_html/src/azure.png
+      
+      # The following changes the ownership as per Apache configuration requirements, enables the second web page, and restarts apache service
+      chown -R apacheAdmin:apacheAdmin /var/www/$secondFQDN/public_html
+      chmod -R 755 /var/www
+      a2ensite $secondFQDN.conf
+      service apache2 restart
+    path: /tmp/secondSite.sh
+    permissions: 0755
+runcmd:
+  - [ sh, -c, "/tmp/setupSecondIP.sh" ]
+  - [ sh, -c, "/tmp/firstSite.sh" ]
+  - [ sh, -c, "/tmp/secondSite.sh" ]
+  
+output: {all: '| tee -a /var/log/cloud-init-output.log'}
