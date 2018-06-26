@@ -11,24 +11,30 @@
 This template deploys a set of Azure resources and configures the resources to serve two distinct Apache web pages.
 <br><br>
 **Documentation Sections**
-* [Overview](#overview)
-* [Deploy Template](#deploy-template)
-    * [Optional - SSH into the VM](#ssh-into-the-vm)
-    * [Decode Cloud-Init Script that was used to bootstrap the VM](#decode-cloud-init-script-that-was-used-to-bootstrap-the-vm)
-    * [Delete the Deployment](#delete-the-deployment)
-* [Detailed Walkthrough](#detailed-walkthrough)
-    * [Directory Structure](#directory-structure)
-    * [Walk-Through - ARM Template (azuredeploy.json)](#walk-through---arm-template-(azuredeploy.json))
-    * [Walk-Through - cloud-init.yml Walk-Through](#walk-through---cloud-init.yml-walk-through)
-    * [Walk-Through - Second IP Configuration (Inside of VM)](#walk-through---second-ip-configuration-inside-of-vm)
-    * [Walk-Through - Apache Configuration](#walk-through---apache-configuration)
-    * [Walk-Through - Runtime Configuration Values](#walk-through---runtime-configuration-values)
-* [Learnings](#learnings)
+- [Apache Two Site deployment on Azure](#apache-two-site-deployment-on-azure)
+    - [Overview](#overview)
+    - [Deploy Template](#deploy-template)
+        - [SSH into the VM](#ssh-into-the-vm)
+    - [Decode Cloud-Init Script that was used to bootstrap the VM](#decode-cloud-init-script-that-was-used-to-bootstrap-the-vm)
+    - [Delete the Deployment](#delete-the-deployment)
+- [Detailed Walkthrough](#detailed-walkthrough)
+    - [Directory Structure](#directory-structure)
+    - [Walk-Through - ARM Template (azuredeploy.json)](#walk-through---arm-template-azuredeployjson)
+            - [Custom Data Schema](#custom-data-schema)
+            - [Tags to Pass Runtime Values to VM](#tags-to-pass-runtime-values-to-vm)
+    - [Walk-Through - cloud-init.yml Walk-Through](#walk-through---cloud-inityml-walk-through)
+            - [Outputs Section ARM Template](#outputs-section-arm-template)
+    - [Walk-Through - Second IP Configuration (Inside of VM)](#walk-through---second-ip-configuration-inside-of-vm)
+    - [Walk-Through - Apache Configuration](#walk-through---apache-configuration)
+    - [Walk-Through - Runtime Configuration Values](#walk-through---runtime-configuration-values)
+- [Learnings](#learnings)
+- [Appendix](#appendix)
+    - [File permission issue](#file-permission-issue)
 
 ## Overview
 
 <p align="center">
-    <img src="./src/Single-VM-Multi-Site.jpg" width="600" height="300" title="Single VM Multi Site Architecture">
+    <img src="./src/kubeadm.JPG" width="600" height="300" title="Single VM Multi Site Architecture">
 </p>
 
 
