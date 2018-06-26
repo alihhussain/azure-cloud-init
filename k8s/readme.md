@@ -34,7 +34,7 @@ This template deploys a set of Azure resources and configures the resources to s
 ## Overview
 
 <p align="center">
-    <img src="./src/kubeadm.JPG" width="800" height="800" title="Single VM Multi Site Architecture">
+    <img src="./src/kubeadm.JPG" width="800" height="600" title="Single VM Multi Site Architecture">
 </p>
 
 
