@@ -1,0 +1,37 @@
+body {
+    background-position: 100% 100%;
+    background-repeat: repeat;
+    background-color: #e5eff8;
+    background-image: url('./base-grid-alt-alt.svg');
+    font-family: Indie Flower;
+}
+
+h1 {
+    color: blue;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 80px;
+}
+table {
+    color: black;
+    margin: 0 auto;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 40px;
+}
+span {
+    color: red;
+}
+.info {
+    color: teal;
+    font-family: Raleway;
+}
+
+.images {
+    padding-left: 9%;
+}
+
+#azure {
+    width: 46%;
+    height: auto;
+}

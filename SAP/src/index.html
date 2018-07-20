@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{heading} {index_Title}</title>
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Raleway:400" rel="stylesheet"> 
+    <link rel="stylesheet" href="./src/index.css">
+</head>
+
+<body>
+    <div>
+        <h1>This is your {heading} Test Site</h1>
+    </div>
+    <div class="images">
+        <img id="azure" src="./src/azure.png" alt="Azure">
+        <img id="azure" src="./src/apache2.png" alt="Apache2">
+    </div>
+    <table>
+        <tbody>
+            <tr>
+                <th>Public FQDN</th>
+                <th class="info">{publicFQDN}</th>
+            </tr>
+            <tr>
+                <th>Private IP Address</th>
+                <th class="info">{privateIP}</th>
+            </tr>
+            <tr>
+                <th>Public IP:</th>
+                <th class="info">{publicIP}</th>
+            </tr>
+            <tr>
+                <th>Site Location:</th>
+                <th class="info">{siteLocation}</th>
+            </tr>
+            <tr>
+                <th>VM Name</th>
+                <th class="info">{vmName}</th>
+            </tr>
+            <tr>
+                <th>OS Type:</th>
+                <th class="info">{osType}</th>
+            </tr>
+            <tr>
+                <th>Azure Resource Group</th>
+                <th class="info">{resourceGroup}</th>
+            </tr>
+            <tr>
+                <th>VM Size:</th>
+                <th class="info">{vmSize}</th>
+            </tr>
+            <tr>
+                <th>Fault Domain</th>
+                <th class="info">{faultDomain}</th>
+            </tr>
+            <tr>
+                <th>Update Domain:</th>
+                <th class="info">{updateDomain}</th>
+            </tr>
+            <tr>
+                <th>Zone</th>
+                <th class="info">{zone}</th>
+            </tr>
+            <tr>
+                <th>Virtual Machine ID</th>
+                <th class="info">{vmId}</th>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
